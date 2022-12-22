@@ -1,0 +1,24 @@
+Nathan's Google Maps Harley thing;
+
+
+https://nathdobson.github.io/mappy/      place to try it out
+https://github.com/nathdobson/mappy      Nathan's code on GitHub
+
+	index.html 	references to the google stuff   
+			and an empty div called map
+			the key on the google maps is to his account
+			the reference to initMap is to index.js file has this function
+
+	index.js	his javascript code
+			makes multiple references to google.map.xxx  where xxx are classes in this module
+			classes were available because in index.html we reference maps.googleapis.com.... as src code
+
+	style.css	css for this page (index.html)
+
+	
+Documentation for google.map.xxxx classes is at
+
+https://developers.google.com/maps/documentation/javascript/overview
+			documentation,    note below is guides, reference samples, support
+
+Suppose we want to understand a google.map.xxx class try the reference.
