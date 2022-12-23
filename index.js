@@ -11,24 +11,27 @@ function initMap() {
   const infowindow = new google.maps.InfoWindow({
     content: "It's alive!",
   });
+  infowindow.addListener("closeclick", () => {
+    opened = false;
+  })
   const marker = new google.maps.Marker({
     position: new google.maps.LatLng(62.281819, -150.287132),
     map,
     title: "Hello World!",
-    label: "ThisIsABigLabel",
+    label: "This Was A Small Label",
   });
   marker.addListener("click", () => {
-      if(opened){
-          opened=false
-        infowindow.close();
-      }else{
-          opened=true
-          infowindow.open({
-            anchor: marker,
-            map,
-            shouldFocus: false,
-          });
-      }
+    if (opened) {
+      opened = false
+      infowindow.close();
+    } else {
+      opened = true
+      infowindow.open({
+        anchor: marker,
+        map,
+        shouldFocus: false,
+      });
+    }
   });
   const bounds = new google.maps.LatLngBounds(
     new google.maps.LatLng(62.281819, -150.287132),
