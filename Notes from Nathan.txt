@@ -21,4 +21,5 @@ Documentation for google.map.xxxx classes is at
 https://developers.google.com/maps/documentation/javascript/overview
 			documentation,    note below is guides, reference samples, support
 
-Suppose we want to understand a google.map.xxx class try the reference.
+Suppose we want to understand a google.map.xxx class try the reference for item above.
+		at 
