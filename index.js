@@ -4,8 +4,8 @@
 var opened = false
 function initMap() {
   const map = new google.maps.Map(document.getElementById("map"), {
-    zoom: 11,
-    center: { lat: 62.323907, lng: -150.109291 },
+    zoom: 18,
+    center: { lat: 43.119896426752995, lng: -77.54944500476694},
     mapTypeId: "satellite",
   });
   const infowindow = new google.maps.InfoWindow({
@@ -34,13 +34,14 @@ function initMap() {
     }
   });
   const bounds = new google.maps.LatLngBounds(
-    new google.maps.LatLng(62.281819, -150.287132),
-    new google.maps.LatLng(62.400471, -150.005608)
+    new google.maps.LatLng(43.11909469779039, -77.54973200110064),
+    new google.maps.LatLng(43.120126958605546, -77.54878518140023)
   );
   // The photograph is courtesy of the U.S. Geological Survey.
-  let image = "https://developers.google.com/maps/documentation/javascript/";
-
-  image += "examples/full/images/talkeetna.png";
+  let image1 = "https://developers.google.com/maps/documentation/javascript/examples/full/images/talkeetna.png";
+  
+  const image = "Ground_Floor.jpg";
+  
   /**
    * The custom USGSOverlay object contains the USGS image,
    * the bounds of the image, and a reference to the map.
@@ -68,7 +69,7 @@ function initMap() {
       const img = document.createElement("img");
 
       img.src = this.image;
-      img.style.width = "100%";
+      img.style.width = "75%";
       img.style.height = "100%";
       img.style.position = "absolute";
       this.div.appendChild(img);
