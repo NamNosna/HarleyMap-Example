@@ -8,18 +8,42 @@ function initMap() {
     center: { lat: 43.119896426752995, lng: -77.54944500476694},
     mapTypeId: "satellite",
   });
-  const infowindow = new google.maps.InfoWindow({
-    content: "It's alive!",
+
+  // Click to register the location (Debug Feature)
+  let infoWindowCoords = new google.maps.InfoWindow({
+    content: "Click the map to get Lat/Lng!",
+    position: { lat: 43.119896426752995, lng: -77.54944500476694}
   });
+  map.addListener("click", (mapMouseClick) => {
+    // Close the current InfoWindow.
+    infoWindowCoords.close();
+    // Create a new InfoWindow.
+    infoWindowCoords = new google.maps.InfoWindow({
+      position: mapMouseClick.latLng,
+    });
+    infoWindowCoords.setContent(
+      JSON.stringify(mapMouseClick.latLng.toJSON(), null, 2)
+    );
+    infoWindowCoords.open(map);
+  })
+  
+
+  const infowindow = new google.maps.InfoWindow({
+    content: "hello"
+  });
+
   infowindow.addListener("closeclick", () => {
     opened = false;
   })
+
   const marker = new google.maps.Marker({
-    position: new google.maps.LatLng(62.281819, -150.287132),
+    position: new google.maps.LatLng(43.119792619374046, -77.5492980187146),
     map,
     title: "Hello World!",
-    label: "This Was A Small Label",
+    label: "Court Yard",
   });
+
+  
   marker.addListener("click", () => {
     if (opened) {
       opened = false
@@ -33,20 +57,26 @@ function initMap() {
       });
     }
   });
+  
+  const overlayCoordSW = new google.maps.LatLng(43.11901762438026, -77.54985904953162)
+  const overlayCoordNE = new google.maps.LatLng(43.12045260645478, -77.5484469979196)
+  const imgHidth = overlayCoordSW.lng - overlayCoordNE.lng;
+  const imgHeight = overlayCoordSW.lng - overlayCoordNE.lng;
+
+
+
   const bounds = new google.maps.LatLngBounds(
-    new google.maps.LatLng(43.11909469779039, -77.54973200110064),
-    new google.maps.LatLng(43.120126958605546, -77.54878518140023)
+    overlayCoordSW,// southwest
+    overlayCoordNE // northeast
   );
-  // The photograph is courtesy of the U.S. Geological Survey.
-  let image1 = "https://developers.google.com/maps/documentation/javascript/examples/full/images/talkeetna.png";
+  // The image is the floorPlan for first floor
   
-  const image = "Ground_Floor.jpg";
-  
+
   /**
-   * The custom USGSOverlay object contains the USGS image,
+   * The custom HarleyOverlay object contains the USGS image,
    * the bounds of the image, and a reference to the map.
    */
-  class USGSOverlay extends google.maps.OverlayView {
+  class HarleyOverlay extends google.maps.OverlayView {
     bounds;
     image;
     div;
@@ -69,9 +99,11 @@ function initMap() {
       const img = document.createElement("img");
 
       img.src = this.image;
-      img.style.width = "75%";
+      img.style.width = "100%";
       img.style.height = "100%";
       img.style.position = "absolute";
+      img.style.transform = "rotate(270deg)"
+      
       this.div.appendChild(img);
 
       // Add the element to the "overlayLayer" pane.
@@ -141,11 +173,32 @@ function initMap() {
         this.setMap(map);
       }
     }
+   
   }
+  const images = ["Ground_Floor.jpg", "First_Floor.jpg", "Second_Floor.jpg"]
+  const overlays = [new HarleyOverlay(bounds, images[0]), new HarleyOverlay(bounds, images[1]), new HarleyOverlay(bounds, images[2])]
+  let nCurrentImg = 0;
+  function rotate(){
+    for(let i = 0; i < overlays.length; i++)
+    {
+      if(i == nCurrentImg)
+      {
+        overlays[i].setMap(map);
+      }
+      else{
+        overlays[i].setMap(null);
+      }
+    }
+    nCurrentImg = (nCurrentImg + 1) % overlays.length;
+  }
+  rotate() 
 
-  const overlay = new USGSOverlay(bounds, image);
-
-  overlay.setMap(map);
+  const switchFloorsButton = document.createElement("button");
+  switchFloorsButton.textContent = "Switch Floor"
+  switchFloorsButton.classList.add("custom-map-control-button");
+  switchFloorsButton.addEventListener("click", () => {
+   rotate()
+  })
 
   const toggleButton = document.createElement("button");
 
@@ -156,12 +209,17 @@ function initMap() {
 
   toggleDOMButton.textContent = "Toggle DOM Attachment";
   toggleDOMButton.classList.add("custom-map-control-button");
+
   toggleButton.addEventListener("click", () => {
-    overlay.toggle();
+    overlays[0].toggle();
+    overlays[1].toggle()
+    overlays[2].toggle()
   });
   toggleDOMButton.addEventListener("click", () => {
-    overlay.toggleDOM(map);
+    overlays[0].toggleDOM(map);
   });
+
+  map.controls[google.maps.ControlPosition.TOP_RIGHT].push(switchFloorsButton);
   map.controls[google.maps.ControlPosition.TOP_RIGHT].push(toggleDOMButton);
   map.controls[google.maps.ControlPosition.TOP_RIGHT].push(toggleButton);
 }
