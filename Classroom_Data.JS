@@ -1,12 +1,12 @@
-classroom_data = 
+let classroom_data = 
 [
     {
     "relativeCoord":
     {
         "width":0.386046520499296,
-        "length":0.5786163644881662
+        "height":0.5786163644881662
     },
-    "Names" : 
+    "names" : 
     [
         "Court Yard"
     ],
@@ -27,9 +27,9 @@ classroom_data =
     "relativeCoord":
     {
         "width":0.20348837209302326,
-        "length":0.3647798722737984
+        "height":0.3647798722737984
     },
-    "Names" : 
+    "names" : 
     [
         "Dining Hall"
     ],
@@ -50,9 +50,9 @@ classroom_data =
     "relativeCoord":
     {
         "width":0.22558139091314272,
-        "length":0.4725965772125354
+        "height":0.4725965772125354
     },
-    "Names" : 
+    "names" : 
     [
         "Biology Room"
     ],
@@ -91,4 +91,4 @@ function searchClassrooms(inputValue){
     return resultString
 }
 
-
+export {classroom_data, searchClassrooms}

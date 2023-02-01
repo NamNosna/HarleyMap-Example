@@ -1,8 +1,86 @@
 // This example adds hide() and show() methods to a custom overlay's prototype.
 // These methods toggle the visibility of the container <div>.
 // overlay to or from the map.
+//import { classroom_data } from "./Classroom_Data.JS";
+const classroom_data = 
+[
+    {
+    "relativeCoord":
+    {
+        "width":0.386046520499296,
+        "height":0.5786163644881662
+    },
+    "names" : 
+    [
+        "Court Yard"
+    ],
+    "teachers":
+    [
+        
+    ],
+    "Floor" :
+    [
+        "1"
+    ],
+    "Courses":
+    [
+        
+    ]
+},
+{
+    "relativeCoord":
+    {
+        "width":0.20348837209302326,
+        "height":0.3647798722737984
+    },
+    "names" : 
+    [
+        "Dining Hall"
+    ],
+    "teachers":
+    [
+        
+    ],
+    "Floor" :
+    [
+        "1"
+    ],
+    "Courses":
+    [
+        
+    ]
+},
+{
+    "relativeCoord":
+    {
+        "width":0.22558139091314272,
+        "height":0.4725965772125354
+    },
+    "names" : 
+    [
+        "Biology Room"
+    ],
+    "teachers":
+    [
+        "Mr. Henschke",
+        "Dr. Vinton"
+    ],
+    "Floor" :
+    [
+        "1"
+    ],
+    "Courses":
+    [
+        "AP Biology",
+        "Biology",
+        "Honors Biology",
+        "Environmental Science"
+    ]
+}
+]
 var opened = false
 function initMap() {
+
   const map = new google.maps.Map(document.getElementById("map"), {
     zoom: 18,
     center: { lat: 43.119896426752995, lng: -77.54944500476694},
@@ -58,19 +136,34 @@ function initMap() {
     }
   });
   
-  const overlayCoordSW = new google.maps.LatLng(43.11901762438026, -77.54985904953162)
-  const overlayCoordNE = new google.maps.LatLng(43.12045260645478, -77.5484469979196)
-  const imgHidth = overlayCoordSW.lng - overlayCoordNE.lng;
-  const imgHeight = overlayCoordSW.lng - overlayCoordNE.lng;
+  const latSouth = 43.11901762438026
+  const latNorth = 43.12045260645478
+  const lngWest = -77.54985904953162
+  const lngEast = -77.5484469979196
 
+  const overlayCoordSW = new google.maps.LatLng(latSouth, lngWest)
+  const overlayCoordNE = new google.maps.LatLng(latNorth, lngEast)
+  const imgWidth = lngEast - lngWest;
+  const imgHeight = latNorth - latSouth;
 
+  const classroomMarkers = []
+
+  for(let i = 0; i < classroom_data.length; i++)
+  {
+    let classroom = classroom_data[i]    
+      classroomMarkers[i] = new google.maps.Marker({
+        position: new google.maps.LatLng( classroom.relativeCoord.height * imgHeight + latSouth,
+          classroom.relativeCoord.width * imgWidth + lngWest),
+        map: map,
+        label: classroom.names[0],
+        title: "hello"
+      })
+  }
 
   const bounds = new google.maps.LatLngBounds(
     overlayCoordSW,// southwest
     overlayCoordNE // northeast
   );
-  // The image is the floorPlan for first floor
-  
 
   /**
    * The custom HarleyOverlay object contains the USGS image,
