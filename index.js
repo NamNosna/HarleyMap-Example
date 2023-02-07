@@ -1,96 +1,24 @@
 // This example adds hide() and show() methods to a custom overlay's prototype.
 // These methods toggle the visibility of the container <div>.
 // overlay to or from the map.
-//import { classroom_data } from "./Classroom_Data.JS";
-const classroom_data = 
-[
-    {
-    "relativeCoord":
-    {
-        "width":0.386046520499296,
-        "height":0.5786163644881662
-    },
-    "names" : 
-    [
-        "Court Yard"
-    ],
-    "teachers":
-    [
-        
-    ],
-    "Floor" :
-    [
-        "1"
-    ],
-    "Courses":
-    [
-        
-    ]
-},
-{
-    "relativeCoord":
-    {
-        "width":0.20348837209302326,
-        "height":0.3647798722737984
-    },
-    "names" : 
-    [
-        "Dining Hall"
-    ],
-    "teachers":
-    [
-        
-    ],
-    "Floor" :
-    [
-        "1"
-    ],
-    "Courses":
-    [
-        
-    ]
-},
-{
-    "relativeCoord":
-    {
-        "width":0.22558139091314272,
-        "height":0.4725965772125354
-    },
-    "names" : 
-    [
-        "Biology Room"
-    ],
-    "teachers":
-    [
-        "Mr. Henschke",
-        "Dr. Vinton"
-    ],
-    "Floor" :
-    [
-        "1"
-    ],
-    "Courses":
-    [
-        "AP Biology",
-        "Biology",
-        "Honors Biology",
-        "Environmental Science"
-    ]
-}
-]
+import { classroom_data, searchClassroomsIndex } from "./Classroom_Data.JS";
 var opened = false
+
 function initMap() {
 
   const map = new google.maps.Map(document.getElementById("map"), {
     zoom: 18,
-    center: { lat: 43.119896426752995, lng: -77.54944500476694},
+    center: { lat: 43.119896426752995, lng: -77.54944500476694 },
     mapTypeId: "satellite",
   });
+
+  const input = document.getElementById("input_search")
+  const debugText = document.getElementById("debugText")
 
   // Click to register the location (Debug Feature)
   let infoWindowCoords = new google.maps.InfoWindow({
     content: "Click the map to get Lat/Lng!",
-    position: { lat: 43.119896426752995, lng: -77.54944500476694}
+    position: { lat: 43.119896426752995, lng: -77.54944500476694 }
   });
   map.addListener("click", (mapMouseClick) => {
     // Close the current InfoWindow.
@@ -104,7 +32,7 @@ function initMap() {
     );
     infoWindowCoords.open(map);
   })
-  
+
 
   const infowindow = new google.maps.InfoWindow({
     content: "hello"
@@ -121,7 +49,6 @@ function initMap() {
     label: "Court Yard",
   });
 
-  
   marker.addListener("click", () => {
     if (opened) {
       opened = false
@@ -135,7 +62,7 @@ function initMap() {
       });
     }
   });
-  
+
   const latSouth = 43.11901762438026
   const latNorth = 43.12045260645478
   const lngWest = -77.54985904953162
@@ -148,17 +75,35 @@ function initMap() {
 
   const classroomMarkers = []
 
-  for(let i = 0; i < classroom_data.length; i++)
-  {
-    let classroom = classroom_data[i]    
-      classroomMarkers[i] = new google.maps.Marker({
-        position: new google.maps.LatLng( classroom.relativeCoord.height * imgHeight + latSouth,
-          classroom.relativeCoord.width * imgWidth + lngWest),
-        map: map,
-        label: classroom.names[0],
-        title: "hello"
-      })
+  for (let i = 0; i < classroom_data.length; i++) {
+    let classroom = classroom_data[i]
+    classroomMarkers[i] = new google.maps.Marker({
+      position: new google.maps.LatLng(classroom.relativeCoord.height * imgHeight + latSouth,
+        classroom.relativeCoord.width * imgWidth + lngWest),
+      map: map,
+      label: classroom.names[0],
+      title: "hello"
+    })
+    classroomMarkers[i].setVisible(false)
   }
+
+
+  input.addEventListener("keyup", (event) => {
+    if (event.key === "Enter") {
+      input.blur()
+      let hlIndex = searchClassroomsIndex(input.value)
+      if (hlIndex.length === 0) {
+        alert("result not found")
+      }
+      for (let i = 0; i < classroomMarkers.length; i++) {
+        if (hlIndex.indexOf(i) !== -1) {
+          classroomMarkers[i].setVisible(true)
+        } else {
+          classroomMarkers[i].setVisible(false)
+        }
+      }
+    }
+  })
 
   const bounds = new google.maps.LatLngBounds(
     overlayCoordSW,// southwest
@@ -196,7 +141,7 @@ function initMap() {
       img.style.height = "100%";
       img.style.position = "absolute";
       img.style.transform = "rotate(270deg)"
-      
+
       this.div.appendChild(img);
 
       // Add the element to the "overlayLayer" pane.
@@ -266,31 +211,29 @@ function initMap() {
         this.setMap(map);
       }
     }
-   
+
   }
   const images = ["Ground_Floor.jpg", "First_Floor.jpg", "Second_Floor.jpg"]
   const overlays = [new HarleyOverlay(bounds, images[0]), new HarleyOverlay(bounds, images[1]), new HarleyOverlay(bounds, images[2])]
   let nCurrentImg = 0;
-  function rotate(){
-    for(let i = 0; i < overlays.length; i++)
-    {
-      if(i == nCurrentImg)
-      {
+  function rotate() {
+    for (let i = 0; i < overlays.length; i++) {
+      if (i == nCurrentImg) {
         overlays[i].setMap(map);
       }
-      else{
+      else {
         overlays[i].setMap(null);
       }
     }
     nCurrentImg = (nCurrentImg + 1) % overlays.length;
   }
-  rotate() 
+  rotate()
 
   const switchFloorsButton = document.createElement("button");
   switchFloorsButton.textContent = "Switch Floor"
   switchFloorsButton.classList.add("custom-map-control-button");
   switchFloorsButton.addEventListener("click", () => {
-   rotate()
+    rotate()
   })
 
   const toggleButton = document.createElement("button");
@@ -298,23 +241,19 @@ function initMap() {
   toggleButton.textContent = "Toggle";
   toggleButton.classList.add("custom-map-control-button");
 
-  const toggleDOMButton = document.createElement("button");
-
-  toggleDOMButton.textContent = "Toggle DOM Attachment";
-  toggleDOMButton.classList.add("custom-map-control-button");
 
   toggleButton.addEventListener("click", () => {
     overlays[0].toggle();
     overlays[1].toggle()
     overlays[2].toggle()
   });
-  toggleDOMButton.addEventListener("click", () => {
-    overlays[0].toggleDOM(map);
-  });
+
 
   map.controls[google.maps.ControlPosition.TOP_RIGHT].push(switchFloorsButton);
-  map.controls[google.maps.ControlPosition.TOP_RIGHT].push(toggleDOMButton);
   map.controls[google.maps.ControlPosition.TOP_RIGHT].push(toggleButton);
+  map.controls[google.maps.ControlPosition.TOP].push(input);
+  map.controls[google.maps.ControlPosition.LEFT].push(debugText);
+
 }
 
 window.initMap = initMap;

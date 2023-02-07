@@ -39,7 +39,6 @@ let classroom_data =
     ],
     "Floor" :
     [
-        "1"
     ],
     "Courses":
     [
@@ -72,23 +71,41 @@ let classroom_data =
         "Honors Biology",
         "Environmental Science"
     ]
+},
+{
+    "relativeCoord":
+    {
+
+    },
+    "names" : 
+    [
+
+    ],
+    "teachers":
+    [
+
+    ],
+    "Floor" :
+    [
+        
+    ],
+    "Courses":
+    [
+        
+    ]
 }
 ]
 
-function searchClassrooms(inputValue){
-    const searchkey = new RegExp(`\\b${inputValue}\\b`, 'gi');
+function searchClassroomsIndex(inputValue){
+    const searchkey = new RegExp(`\\b${inputValue}+\\b`, 'gi');
     let result = [];
-    for(const tempRoom of classroom_data){
-        for(const[property, values] of Object.entries(tempRoom))
-        for(const value of values){
-            if (value.search(searchkey) !== -1){
-                result.push(JSON.stringify(tempRoom))
-            }
-        }
-    }    
-    resultString = JSON.stringify(result);
-    resultString = resultString.replace(searchkey, "<b>" +inputValue +"</b>")
-    return resultString
+    for(let i = 0; i < classroom_data.length; i++){
+        if (JSON.stringify(classroom_data[i]).search(searchkey) !== -1){
+                result.push(i);
+        }    
+    }   
+    return result;
 }
 
-export {classroom_data, searchClassrooms}
+
+export {classroom_data, searchClassroomsIndex}
