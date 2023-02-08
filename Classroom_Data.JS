@@ -6,11 +6,11 @@ let classroom_data =
         "width":0.386046520499296,
         "height":0.5786163644881662
     },
-    "names" : 
+    "Names" : 
     [
         "Court Yard"
     ],
-    "teachers":
+    "Teachers":
     [
         
     ],
@@ -29,11 +29,11 @@ let classroom_data =
         "width":0.20348837209302326,
         "height":0.3647798722737984
     },
-    "names" : 
+    "Names" : 
     [
         "Dining Hall"
     ],
-    "teachers":
+    "Teachers":
     [
         
     ],
@@ -51,11 +51,11 @@ let classroom_data =
         "width":0.22558139091314272,
         "height":0.4725965772125354
     },
-    "names" : 
+    "Names" : 
     [
         "Biology Room"
     ],
-    "teachers":
+    "Teachers":
     [
         "Mr. Henschke",
         "Dr. Vinton"
@@ -77,11 +77,11 @@ let classroom_data =
     {
 
     },
-    "names" : 
+    "Names" : 
     [
 
     ],
-    "teachers":
+    "Teachers":
     [
 
     ],

@@ -2,7 +2,6 @@
 // These methods toggle the visibility of the container <div>.
 // overlay to or from the map.
 import { classroom_data, searchClassroomsIndex } from "./Classroom_Data.JS";
-var opened = false
 
 function initMap() {
 
@@ -39,29 +38,8 @@ function initMap() {
   });
 
   infowindow.addListener("closeclick", () => {
-    opened = false;
   })
 
-  const marker = new google.maps.Marker({
-    position: new google.maps.LatLng(43.119792619374046, -77.5492980187146),
-    map,
-    title: "Hello World!",
-    label: "Court Yard",
-  });
-
-  marker.addListener("click", () => {
-    if (opened) {
-      opened = false
-      infowindow.close();
-    } else {
-      opened = true
-      infowindow.open({
-        anchor: marker,
-        map,
-        shouldFocus: false,
-      });
-    }
-  });
 
   const latSouth = 43.11901762438026
   const latNorth = 43.12045260645478
@@ -74,20 +52,56 @@ function initMap() {
   const imgHeight = latNorth - latSouth;
 
   const classroomMarkers = []
+  const classroomInfos = []
+  const opened = []
 
   for (let i = 0; i < classroom_data.length; i++) {
     let classroom = classroom_data[i]
+    
+    //initialize all markers
     classroomMarkers[i] = new google.maps.Marker({
       position: new google.maps.LatLng(classroom.relativeCoord.height * imgHeight + latSouth,
         classroom.relativeCoord.width * imgWidth + lngWest),
       map: map,
-      label: classroom.names[0],
-      title: "hello"
+      label: classroom.Names[0]
     })
     classroomMarkers[i].setVisible(false)
+
+    //setting the infoWindow content
+    let infoContent = ""
+    for (const [key, value] of Object.entries(classroom_data[i])) {
+      if (value.length > 0) {
+          infoContent += key + ": "
+          for(const valueterm of value)
+          {
+            infoContent += valueterm + ", "
+          }
+          infoContent = infoContent.substring(0, infoContent.length - 2) + "\n"
+      }
+    }
+ 
+    opened[i]= false
+    //initialize the infoWindow
+    classroomInfos[i] = new google.maps.InfoWindow({
+      content: infoContent
+    })
+
+    //call the infowindow when marker is clicked
+    classroomMarkers[i].addListener("click", () => {
+      if(opened[i]){
+        opened[i] = false;
+        classroomInfos[i].close()
+      }else{
+        opened[i] = true;
+        classroomInfos[i].open({
+          anchor:classroomMarkers[i],
+          map,
+          shouldFocus: false,
+        })
+      }
+    })
   }
-
-
+  
   input.addEventListener("keyup", (event) => {
     if (event.key === "Enter") {
       input.blur()
