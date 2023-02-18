@@ -7,8 +7,10 @@
         {
             "type": "chrome",
             "request": "launch",
-            "name": "Launch Chrome against localhost",
-            "url": "http://localhost:8000",
+            // "name": "Launch Chrome against localhost",
+            // "url": "http://localhost:8000",
+            "name" : "Launch in github",
+            "url":"https://namnosna.github.io/HarleyMap-Example/",
             "webRoot": "${workspaceFolder}"
         }
     ]
