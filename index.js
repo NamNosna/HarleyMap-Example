@@ -1,7 +1,7 @@
 // This example adds hide() and show() methods to a custom overlay's prototype.
 // These methods toggle the visibility of the container <div>.
 // overlay to or from the map.
-import { classroom_data, searchClassroomsIndex } from "./Classroom_Data.JS";
+import { classroom_data, searchClassroomsIndex, node_data, searchNodeIndex } from "./Classroom_Data.JS";
 
 function initMap() {
 
@@ -52,16 +52,20 @@ function initMap() {
   const imgHeight = latNorth - latSouth;
 
   const classroomMarkers = []
+  const nodeMarkers = []
   const classroomInfos = []
+  const nodeInfos = []
   const opened = []
+  const nodeOpened = []
 
+  //set up bubbles for each of the rooms
   for (let i = 0; i < classroom_data.length; i++) {
     let classroom = classroom_data[i]
-    
+
     //initialize all markers
     classroomMarkers[i] = new google.maps.Marker({
-      position: new google.maps.LatLng(classroom.relativeCoord.height * imgHeight + latSouth,
-        classroom.relativeCoord.width * imgWidth + lngWest),
+      position: new google.maps.LatLng(classroom.coord.lat,
+        classroom.coord.lng),
       map: map,
       label: classroom.Names[0]
     })
@@ -71,16 +75,15 @@ function initMap() {
     let infoContent = ""
     for (const [key, value] of Object.entries(classroom_data[i])) {
       if (value.length > 0) {
-          infoContent += key + ": "
-          for(const valueterm of value)
-          {
-            infoContent += valueterm + ", "
-          }
-          infoContent = infoContent.substring(0, infoContent.length - 2) + "\n"
+        infoContent += key + ": "
+        for (const valueterm of value) {
+          infoContent += valueterm + ", "
+        }
+        infoContent = infoContent.substring(0, infoContent.length - 2) + "\n"
       }
     }
- 
-    opened[i]= false
+
+    opened[i] = false
     //initialize the infoWindow
     classroomInfos[i] = new google.maps.InfoWindow({
       content: infoContent
@@ -88,25 +91,70 @@ function initMap() {
 
     //call the infowindow when marker is clicked
     classroomMarkers[i].addListener("click", () => {
-      if(opened[i]){
+      if (opened[i]) {
         opened[i] = false;
         classroomInfos[i].close()
-      }else{
+      } else {
         opened[i] = true;
         classroomInfos[i].open({
-          anchor:classroomMarkers[i],
+          anchor: classroomMarkers[i],
           map,
           shouldFocus: false,
         })
       }
     })
   }
-  
+
+  //set up bubbles for each of the nodes
+  for (let i = 0; i < Object.keys(node_data).length; i++) {
+    let [name, node] = Object.entries(node_data)[i];
+    //initialize all markers
+    nodeMarkers[i] = new google.maps.Marker({
+      position: new google.maps.LatLng(node.coord.lat,
+        node.coord.lng),
+      map: map,
+      label: node.description
+    })
+    nodeMarkers[i].setVisible(false)
+
+    //setting the infoWindow content
+    let infoContent = ""
+
+    if (node.imgURL.length !== 0) {
+      infoContent = `<div class = imgFrame><img src='${node.imgURL}' class = img></div>`
+    }
+
+    nodeOpened[i] = false
+    //initialize the infoWindow
+    nodeInfos[i] = new google.maps.InfoWindow({
+      content: infoContent
+    })
+
+    //call the infowindow when marker is clicked
+    nodeMarkers[i].addListener("click", () => {
+      if (nodeOpened[i]) {
+        nodeOpened[i] = false;
+        nodeInfos[i].close()
+      } else {
+        nodeOpened[i] = true;
+        nodeInfos[i].open({
+          anchor: nodeMarkers[i],
+          map,
+          shouldFocus: false,
+        })
+      }
+    })
+  }
+
   input.addEventListener("keyup", (event) => {
     if (event.key === "Enter") {
+
       input.blur()
       let hlIndex = searchClassroomsIndex(input.value)
-      if (hlIndex.length === 0) {
+
+      let nodeIndex = searchNodeIndex(input.value)
+      document.getElementById("debugText").innerHTML = nodeIndex
+      if (hlIndex.length === 0 && nodeIndex.length === 0) {
         alert("result not found")
       }
       for (let i = 0; i < classroomMarkers.length; i++) {
@@ -114,6 +162,13 @@ function initMap() {
           classroomMarkers[i].setVisible(true)
         } else {
           classroomMarkers[i].setVisible(false)
+        }
+      }
+      for (let i = 0; i < nodeMarkers.length; i++) {
+        if (nodeIndex.indexOf(i) !== -1) {
+          nodeMarkers[i].setVisible(true)
+        } else {
+          nodeMarkers[i].setVisible(false)
         }
       }
     }

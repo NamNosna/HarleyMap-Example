@@ -1,38 +1,50 @@
 <html>
-  <head>
-    <title>Harley Map Project</title>
-    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
 
-    <link rel="stylesheet" type="text/css" href="./style.css" />
-    <script type="module" src="./Classroom_Data.js"></script>
-    <script type="module" src="./index.js"></script>
+<head>
+  <title>Harley Map Project</title>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
 
-    <style>
-      .searchBox{width: 300px; height:30px; padding: 20px; border: 10px solid rgb(29, 183, 191); border-radius: 20%}
-    </style>
+  <link rel="stylesheet" type="text/css" href="./style.css" />
+  <script type="module" src="./Classroom_Data.js"></script>
+  <script type="module" src="./index.js"></script>
 
-  </head>
-  <body>
-    <input
-      id="input_search"
-      type="text"
-      class = "searchBox"
-      placeholder="Search Box"
-    />
-    <p id = "debugText">PLACEHOLDER FOR DEBUGGING</p>
+  <style>
+    .searchBox {
+      width: 300px;
+      height: 30px;
+      padding: 20px;
+      border: 10px solid rgb(29, 183, 191);
+      border-radius: 20%
+    }
 
-    <div id="map"></div>
+    .imgFrame {
+      float: left;
+    }
 
-    <!--
+    .img {
+      width: 200px;
+      height: 150px;
+    }
+  </style>
+
+</head>
+
+<body>
+  <input id="input_search" type="text" class="searchBox" placeholder="Search Box" />
+  <p id="debugText">PLACEHOLDER FOR DEBUGGING</p>
+
+  <div id="map"></div>
+
+  <!--
      The `defer` attribute causes the callback to execute after the full HTML
      document has been parsed. For non-blocking uses, avoiding race conditions,
      and consistent behavior across browsers, consider loading using Promises
      with https://www.npmjs.com/package/@googlemaps/js-api-loader.
     -->
-    
-    <script
-      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA2rB7VUjvo9RMfqh5wi9bv1iMFZZLVP2Y&callback=initMap&v=weekly"
-      defer
-    ></script>
-  </body>
+
+  <script
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA2rB7VUjvo9RMfqh5wi9bv1iMFZZLVP2Y&callback=initMap&v=weekly"
+    defer></script>
+</body>
+
 </html>
