@@ -109,9 +109,11 @@ const node_data = {
             'f5'
         ],
         "Floor":
+
         [
             "1"
         ],
+
         "isFound": false
     },
     'f2': {
@@ -167,7 +169,7 @@ const node_data = {
     'f5': {
         "coord": {
             "lat": 43.119363417375354,
-            "lng": -77.54887511750276 
+            "lng": -77.54887511750276
         },
         "description": "Art Room",
         "imgURL": "LocationPictures\\Art_Room.jpg",
@@ -181,19 +183,21 @@ const node_data = {
     },
     'f6': {
         "coord": {
-            "lat":0,
+            "lat": 0,
             "lng": 0
         },
         "description": "",
         "imgURL": "",
         "adjacency": [
-            
+
         ],
         "Floor": [
             "1"
         ],
         "isFound": false
+
     }
+
 }
 
 function searchClassroomsIndex(inputValue) {
@@ -240,6 +244,7 @@ function pathFinder(nodeData, start, end){
         let tempResult = [].concat(currentResult)
         document.getElementById("debugText").innerHTML += "<br> inner search triggered" + start + end + " overall : " + currentResult
 
+
         if (tempResult.indexOf(start.valueOf()) !== -1){
             return []
         }
@@ -247,6 +252,7 @@ function pathFinder(nodeData, start, end){
         if (start.valueOf() === end.valueOf()) 
         {
             return tempResult
+
         }
         else{
             let possibilities = []

@@ -1,8 +1,9 @@
 // This example adds hide() and show() methods to a custom overlay's prototype.
 // These methods toggle the visibility of the container <div>.
 // overlay to or from the map.
-import { pathFinder } from "./Classroom_Data.JS";
-import { classroom_data, searchClassroomsIndex, node_data, searchNodeIndex } from "./Classroom_Data.JS";
+
+import { classroom_data, searchClassroomsIndex, node_data, searchNodeIndex, pathFinder} from "./Classroom_Data.JS";
+
 
 function initMap() {
 
