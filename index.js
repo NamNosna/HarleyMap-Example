@@ -1,6 +1,7 @@
 // This example adds hide() and show() methods to a custom overlay's prototype.
 // These methods toggle the visibility of the container <div>.
 // overlay to or from the map.
+import { pathFinder } from "./Classroom_Data.JS";
 import { classroom_data, searchClassroomsIndex, node_data, searchNodeIndex } from "./Classroom_Data.JS";
 
 function initMap() {
@@ -11,7 +12,8 @@ function initMap() {
     mapTypeId: "satellite",
   });
 
-  const input = document.getElementById("input_search")
+  const input1 = document.getElementById("input_search1")
+  const input2 = document.getElementById("input_search2")
   const debugText = document.getElementById("debugText")
 
   // Click to register the location (Debug Feature)
@@ -146,14 +148,15 @@ function initMap() {
     })
   }
 
-  input.addEventListener("keyup", (event) => {
+  input1.addEventListener("keyup", (event) => {
     if (event.key === "Enter") {
 
-      input.blur()
-      let hlIndex = searchClassroomsIndex(input.value)
-
-      let nodeIndex = searchNodeIndex(input.value)
-      document.getElementById("debugText").innerHTML = nodeIndex
+      input1.blur()
+      //search for classrooms and nodes
+      let hlIndex = searchClassroomsIndex(input1.value)
+      let nodeIndex = searchNodeIndex(input1.value)
+      
+      document.getElementById("debugText").innerHTML += nodeIndex
       if (hlIndex.length === 0 && nodeIndex.length === 0) {
         alert("result not found")
       }
@@ -173,6 +176,26 @@ function initMap() {
       }
     }
   })
+  input2.addEventListener("keyup", (event) => {
+    if (event.key === "Enter") {
+      input2.blur()
+      if (input1.value === ""){
+        alert("must enter a starting point")
+      }else{
+        document.getElementById("debugText").innerHTML += "search Started"
+        let result = pathFinder(node_data, input1.value, input2.value)
+        document.getElementById("debugText").innerHTML += "result returned" + result
+        if (result.length === 0){
+          document.getElementById("debugText").innerHTML += "no available path found"
+        }else 
+        {document.getElementById("debugText").innerHTML += "result returned" + result}
+
+      
+      }
+    }
+  })
+
+
 
   const bounds = new google.maps.LatLngBounds(
     overlayCoordSW,// southwest
@@ -320,7 +343,8 @@ function initMap() {
 
   map.controls[google.maps.ControlPosition.TOP_RIGHT].push(switchFloorsButton);
   map.controls[google.maps.ControlPosition.TOP_RIGHT].push(toggleButton);
-  map.controls[google.maps.ControlPosition.TOP].push(input);
+  map.controls[google.maps.ControlPosition.TOP].push(input1);
+  map.controls[google.maps.ControlPosition.TOP].push(input2);
   map.controls[google.maps.ControlPosition.LEFT].push(debugText);
 
 }
