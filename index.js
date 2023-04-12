@@ -168,17 +168,21 @@ function initMap() {
       if (input1.value === "") {
         alert("must enter a starting point")
       } else {
-        
+
         let result = pathFinder(node_data, input1.value, input2.value)
         /* Uncomment to test Result
-        document.getElementById("debugText").innerHTML += "result returned" + result
+        document.getElementById("debugText").innerHTML += "result returned" + result */
         if (result.length === 0) {
-          document.getElementById("debugText").innerHTML += "no available path found"
-        } else {
-          document.getElementById("debugText").innerHTML += "result returned" + result
-        } */
-        
-        
+          alert("no available path found")
+        }
+        let nodeIndex = searchNodeIndex(result)
+        for (let i = 0; i < nodeMarkers.length; i++) {
+          if (nodeIndex.indexOf(i) !== -1) {
+            nodeMarkers[i].setVisible(true)
+          } else {
+            nodeMarkers[i].setVisible(false)
+          }
+        }
       }
     }
     //if only input 1 is filled, perform a search

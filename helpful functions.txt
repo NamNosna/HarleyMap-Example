@@ -6,8 +6,9 @@ Object: {
     }
 }
 array: {
-    length
+    length: *arrayName*.length
     append: *arrayName*.push(*itemName*)
+    checkType: Array.isArray(*objectName*)
 }
 
 string: {

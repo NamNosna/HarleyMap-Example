@@ -212,10 +212,17 @@ function searchClassroomsIndex(inputValue) {
 function searchNodeIndex(inputValue) {
     const searchkey = new RegExp(`\\b${inputValue}+\\b`, 'gi');
     let result = [];
-    for (let i = 0; i < Object.keys(node_data).length; i++) {
-        let [key, value] = Object.entries(node_data)[i];
-        if (value.description.search(searchkey) !== -1) {
-            result.push(i);
+
+    if (Array.isArray(inputValue)) {
+        for (let i = 0; i < inputValue.length; i++) {
+            result.push(Object.keys(node_data).indexOf(inputValue[i]))
+        }
+    } else {
+        for (let i = 0; i < Object.keys(node_data).length; i++) {
+            let [key, value] = Object.entries(node_data)[i];
+            if (value.description.search(searchkey) !== -1) {
+                result.push(i);
+            }
         }
     }
     return result;
@@ -223,6 +230,7 @@ function searchNodeIndex(inputValue) {
 //a path finder that returns an array of location labels
 //nodeData must be an object in this case node_data
 //start and end refers to the property key string in nodeData. e.g. f2, f5
+//returns an array of property key string
 function pathFinder(nodeData, start, end) {
     //document.getElementById("debugText").innerHTML += "<br> search triggered"
     //refresher and tester
@@ -279,5 +287,7 @@ function pathFinder(nodeData, start, end) {
     //document.getElementById("debugText.innerHTML") += "<br> search returned"
     return result
 }
+
+
 
 export { classroom_data, searchClassroomsIndex, searchNodeIndex, node_data, pathFinder }
