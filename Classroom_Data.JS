@@ -110,11 +110,10 @@ const node_data = {
         ],
         "Floor":
 
-        [
-            "1"
-        ],
+            [
+                "1"
+            ],
 
-        "isFound": false
     },
     'f2': {
         "coord":
@@ -129,10 +128,10 @@ const node_data = {
             "f4"
         ],
         "Floor":
-        [
-            "1"
-        ],
-        "isFound": false
+            [
+                "1"
+            ],
+
     },
     'f3': {
         "coord":
@@ -146,10 +145,10 @@ const node_data = {
             "f4"
         ],
         "Floor":
-        [
-            "1"
-        ],
-        "isFound": false
+            [
+                "1"
+            ],
+
     },
     'f4': {
         "coord": {
@@ -164,7 +163,7 @@ const node_data = {
         "Floor": [
             "1"
         ],
-        "isFound": false
+
     },
     'f5': {
         "coord": {
@@ -179,7 +178,7 @@ const node_data = {
         "Floor": [
             "1"
         ],
-        "isFound": false
+
     },
     'f6': {
         "coord": {
@@ -194,7 +193,6 @@ const node_data = {
         "Floor": [
             "1"
         ],
-        "isFound": false
 
     }
 
@@ -225,36 +223,36 @@ function searchNodeIndex(inputValue) {
 //a path finder that returns an array of location labels
 //nodeData must be an object in this case node_data
 //start and end refers to the property key string in nodeData. e.g. f2, f5
-function pathFinder(nodeData, start, end){
-    document.getElementById("debugText").innerHTML += "<br> search triggered"
+function pathFinder(nodeData, start, end) {
+    //document.getElementById("debugText").innerHTML += "<br> search triggered"
     //refresher and tester
     let validStart = false;
     let validEnd = false;
     for (let i = 0; i < Object.keys(nodeData).length; i++) {
         let key = Object.keys(nodeData)[i]
-        if(key.valueOf() === start.valueOf()){validStart = true}
-        if(key.valueOf() === end.valueOf()){validEnd = true}
+        if (key.valueOf() === start.valueOf()) { validStart = true }
+        if (key.valueOf() === end.valueOf()) { validEnd = true }
     }
     let result = []
-    if (!(validStart && validEnd)){
-        document.getElementById("debugText").innerHTML += "<br> search exited"
+    if (!(validStart && validEnd)) {
+        //document.getElementById("debugText").innerHTML += "<br> search exited"
+        alert("input key Error")
         return result
     }
-    function innerPathFinder(nodeData, start, end, currentResult){
+    function innerPathFinder(nodeData, start, end, currentResult) {
         let tempResult = [].concat(currentResult)
-        document.getElementById("debugText").innerHTML += "<br> inner search triggered" + start + end + " overall : " + currentResult
+        //document.getElementById("debugText.innerHTML") += "<br> inner search triggered" + start + end + " overall : " + currentResult
 
 
-        if (tempResult.indexOf(start.valueOf()) !== -1){
+        if (tempResult.indexOf(start.valueOf()) !== -1) {
             return []
         }
         tempResult.push(start)
-        if (start.valueOf() === end.valueOf()) 
-        {
+        if (start.valueOf() === end.valueOf()) {
             return tempResult
 
         }
-        else{
+        else {
             let possibilities = []
             let returnValue = []
             //recursion to get all possible results
@@ -263,23 +261,23 @@ function pathFinder(nodeData, start, end){
                 possibilities.push(innerPathFinder(nodeData, newStart, end, tempResult))
             }
             //find and return the best result
-            document.getElementById("debugText").innerHTML += "<br> probabilities returned" + JSON.stringify(possibilities)
+            //document.getElementById("debugText.innerHTML") += "<br> probabilities returned" + JSON.stringify(possibilities)
             for (let i = 0; i < possibilities.length; i++) {
-                if((possibilities[i].length <= returnValue.length && possibilities[i].length !== 0) || returnValue.length === 0){
+                if ((possibilities[i].length <= returnValue.length && possibilities[i].length !== 0) || returnValue.length === 0) {
                     returnValue = possibilities[i]
                 }
             }
-            document.getElementById("debugText").innerHTML += "<br> inner search returned" + returnValue
+            //document.getElementById("debugText.innerHTML") += "<br> inner search returned" + returnValue
             return returnValue;
-        } 
+        }
     }
 
-    
-    result = innerPathFinder(nodeData, start, end, result)
-    document.getElementById("debugText").innerHTML += "<br> result gotten: " + result
 
-    document.getElementById("debugText").innerHTML += "<br> search returned"
+    result = innerPathFinder(nodeData, start, end, result)
+    //document.getElementById("debugText.innerHTML") += "<br> result gotten: " + result
+
+    //document.getElementById("debugText.innerHTML") += "<br> search returned"
     return result
 }
 
-export { classroom_data, searchClassroomsIndex, searchNodeIndex, node_data, pathFinder}
+export { classroom_data, searchClassroomsIndex, searchNodeIndex, node_data, pathFinder }

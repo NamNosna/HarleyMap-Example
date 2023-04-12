@@ -2,7 +2,7 @@
 // These methods toggle the visibility of the container <div>.
 // overlay to or from the map.
 
-import { classroom_data, searchClassroomsIndex, node_data, searchNodeIndex, pathFinder} from "./Classroom_Data.JS";
+import { classroom_data, searchClassroomsIndex, node_data, searchNodeIndex, pathFinder } from "./Classroom_Data.JS";
 
 
 function initMap() {
@@ -151,12 +151,41 @@ function initMap() {
 
   input1.addEventListener("keyup", (event) => {
     if (event.key === "Enter") {
+      inputProcess()
+    }
+  })
+  input2.addEventListener("keyup", (event) => {
+    if (event.key === "Enter") {
+      inputProcess()
+    }
+  })
 
-      input1.blur()
-      //search for classrooms and nodes
+  function inputProcess() {
+    input1.blur()
+    input2.blur()
+    //if there are things on input 2, which enables pathfinder
+    if (input2.value !== "") {
+      if (input1.value === "") {
+        alert("must enter a starting point")
+      } else {
+        
+        let result = pathFinder(node_data, input1.value, input2.value)
+        /* Uncomment to test Result
+        document.getElementById("debugText").innerHTML += "result returned" + result
+        if (result.length === 0) {
+          document.getElementById("debugText").innerHTML += "no available path found"
+        } else {
+          document.getElementById("debugText").innerHTML += "result returned" + result
+        } */
+        
+        
+      }
+    }
+    //if only input 1 is filled, perform a search
+    else {
       let hlIndex = searchClassroomsIndex(input1.value)
       let nodeIndex = searchNodeIndex(input1.value)
-      
+
       document.getElementById("debugText").innerHTML += nodeIndex
       if (hlIndex.length === 0 && nodeIndex.length === 0) {
         alert("result not found")
@@ -176,27 +205,7 @@ function initMap() {
         }
       }
     }
-  })
-  input2.addEventListener("keyup", (event) => {
-    if (event.key === "Enter") {
-      input2.blur()
-      if (input1.value === ""){
-        alert("must enter a starting point")
-      }else{
-        document.getElementById("debugText").innerHTML += "search Started"
-        let result = pathFinder(node_data, input1.value, input2.value)
-        document.getElementById("debugText").innerHTML += "result returned" + result
-        if (result.length === 0){
-          document.getElementById("debugText").innerHTML += "no available path found"
-        }else 
-        {document.getElementById("debugText").innerHTML += "result returned" + result}
-
-      
-      }
-    }
-  })
-
-
+  }
 
   const bounds = new google.maps.LatLngBounds(
     overlayCoordSW,// southwest
