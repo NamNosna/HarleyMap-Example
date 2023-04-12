@@ -105,12 +105,15 @@ const node_data = {
         "description": "gallery",
         "imgURL": "LocationPictures\\HarleyPic_GalleryLeft.jpg",
         "adjacency": [
-            'f2'
+            'f2',
+            'f5'
         ],
         "Floor":
-            [
-                "1"
-            ],
+
+        [
+            "1"
+        ],
+
         "isFound": false
     },
     'f2': {
@@ -122,7 +125,8 @@ const node_data = {
         "description": "library corner",
         "imgURL": "LocationPictures\\Library_Corner.jpg",
         "adjacency": [
-            'f1'
+            'f1',
+            "f4"
         ],
         "Floor":
         [
@@ -191,12 +195,9 @@ const node_data = {
             "1"
         ],
         "isFound": false
-    },
-    'f7': {
-        "coord": {
 
-        }
-    },  
+    }
+
 }
 
 function searchClassroomsIndex(inputValue) {
@@ -221,22 +222,37 @@ function searchNodeIndex(inputValue) {
     }
     return result;
 }
-
 //a path finder that returns an array of location labels
 //nodeData must be an object in this case node_data
 //start and end refers to the property key string in nodeData. e.g. f2, f5
 function pathFinder(nodeData, start, end){
-    //refresher
-    for (let i = 0; i < Object.keys(this).length; i++) {
-        let [key, value] = Object.entries(this)[i]
-        value.isFound = False;
+    document.getElementById("debugText").innerHTML += "<br> search triggered"
+    //refresher and tester
+    let validStart = false;
+    let validEnd = false;
+    for (let i = 0; i < Object.keys(nodeData).length; i++) {
+        let key = Object.keys(nodeData)[i]
+        if(key.valueOf() === start.valueOf()){validStart = true}
+        if(key.valueOf() === end.valueOf()){validEnd = true}
     }
-
+    let result = []
+    if (!(validStart && validEnd)){
+        document.getElementById("debugText").innerHTML += "<br> search exited"
+        return result
+    }
     function innerPathFinder(nodeData, start, end, currentResult){
-        currentResult.push(start)
-        if (start.valueOf() === end.valueOf()) //Question Mark
+        let tempResult = [].concat(currentResult)
+        document.getElementById("debugText").innerHTML += "<br> inner search triggered" + start + end + " overall : " + currentResult
+
+
+        if (tempResult.indexOf(start.valueOf()) !== -1){
+            return []
+        }
+        tempResult.push(start)
+        if (start.valueOf() === end.valueOf()) 
         {
-            return currentResult;
+            return tempResult
+
         }
         else{
             let possibilities = []
@@ -244,28 +260,26 @@ function pathFinder(nodeData, start, end){
             //recursion to get all possible results
             for (let i = 0; i < nodeData[start].adjacency.length; i++) {
                 let newStart = nodeData[start].adjacency[i]
-                if(!nodeData[newStart].isFound) //??
-                {
-                    nodeData[newStart].isFound
-                    possibilities.push(innerPathFinder(nodeData, newStart, end, currentResult))
-                }
+                possibilities.push(innerPathFinder(nodeData, newStart, end, tempResult))
             }
             //find and return the best result
+            document.getElementById("debugText").innerHTML += "<br> probabilities returned" + JSON.stringify(possibilities)
             for (let i = 0; i < possibilities.length; i++) {
-                if(possibilities[i].length <= returnValue.length || returnValue.length === 0){
+                if((possibilities[i].length <= returnValue.length && possibilities[i].length !== 0) || returnValue.length === 0){
                     returnValue = possibilities[i]
                 }
             }
+            document.getElementById("debugText").innerHTML += "<br> inner search returned" + returnValue
             return returnValue;
-        }
+        } 
     }
-    let result = innerPathFinder(nodeData, start, end, currentResult)
-    //refresher
-    for (let i = 0; i < Object.keys(this).length; i++) {
-        let [key, value] = Object.entries(this)[i]
-        value.isFound = False;
-    }
-    return result;
+
+    
+    result = innerPathFinder(nodeData, start, end, result)
+    document.getElementById("debugText").innerHTML += "<br> result gotten: " + result
+
+    document.getElementById("debugText").innerHTML += "<br> search returned"
+    return result
 }
 
-export { classroom_data, searchClassroomsIndex, searchNodeIndex, node_data , pathFinder}
+export { classroom_data, searchClassroomsIndex, searchNodeIndex, node_data, pathFinder}
