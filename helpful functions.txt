@@ -1,0 +1,15 @@
+Object: {
+    find length : Object.keys(*ObjectName*).length,
+    iterate entries : 
+    for (let i = 0; i < Object.keys(*ObjectName*).length; i++) {
+        let [key, value] = Object.entries(*ObjectName*)[i]
+    }
+}
+array: {
+    length
+    append: *arrayName*.push(*itemName*)
+}
+
+string: {
+    equality: *stringA*.valueOf() === *strngB*.valueOf()
+}

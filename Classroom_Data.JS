@@ -111,6 +111,7 @@ const node_data = {
             [
                 "1"
             ],
+        "isFound": false
     },
     'f2': {
         "coord":
@@ -124,9 +125,10 @@ const node_data = {
             'f1'
         ],
         "Floor":
-            [
-                "1"
-            ],
+        [
+            "1"
+        ],
+        "isFound": false
     },
     'f3': {
         "coord":
@@ -140,9 +142,10 @@ const node_data = {
             "f4"
         ],
         "Floor":
-            [
-                "1"
-            ],
+        [
+            "1"
+        ],
+        "isFound": false
     },
     'f4': {
         "coord": {
@@ -157,11 +160,12 @@ const node_data = {
         "Floor": [
             "1"
         ],
+        "isFound": false
     },
     'f5': {
         "coord": {
             "lat": 43.119363417375354,
-            "lng": -77.54887511750276 
+            "lng": -77.54887511750276
         },
         "description": "Art Room",
         "imgURL": "LocationPictures\\Art_Room.jpg",
@@ -171,21 +175,28 @@ const node_data = {
         "Floor": [
             "1"
         ],
+        "isFound": false
     },
     'f6': {
         "coord": {
-            "lat":0,
+            "lat": 0,
             "lng": 0
         },
         "description": "",
         "imgURL": "",
         "adjacency": [
-            
+
         ],
         "Floor": [
             "1"
         ],
-    }
+        "isFound": false
+    },
+    'f7': {
+        "coord": {
+
+        }
+    },  
 }
 
 function searchClassroomsIndex(inputValue) {
@@ -211,5 +222,50 @@ function searchNodeIndex(inputValue) {
     return result;
 }
 
+//a path finder that returns an array of location labels
+//nodeData must be an object in this case node_data
+//start and end refers to the property key string in nodeData. e.g. f2, f5
+function pathFinder(nodeData, start, end){
+    //refresher
+    for (let i = 0; i < Object.keys(this).length; i++) {
+        let [key, value] = Object.entries(this)[i]
+        value.isFound = False;
+    }
 
-export { classroom_data, searchClassroomsIndex, searchNodeIndex, node_data }
+    function innerPathFinder(nodeData, start, end, currentResult){
+        currentResult.push(start)
+        if (start.valueOf() === end.valueOf()) //Question Mark
+        {
+            return currentResult;
+        }
+        else{
+            let possibilities = []
+            let returnValue = []
+            //recursion to get all possible results
+            for (let i = 0; i < nodeData[start].adjacency.length; i++) {
+                let newStart = nodeData[start].adjacency[i]
+                if(!nodeData[newStart].isFound) //??
+                {
+                    nodeData[newStart].isFound
+                    possibilities.push(innerPathFinder(nodeData, newStart, end, currentResult))
+                }
+            }
+            //find and return the best result
+            for (let i = 0; i < possibilities.length; i++) {
+                if(possibilities[i].length <= returnValue.length || returnValue.length === 0){
+                    returnValue = possibilities[i]
+                }
+            }
+            return returnValue;
+        }
+    }
+    let result = innerPathFinder(nodeData, start, end, currentResult)
+    //refresher
+    for (let i = 0; i < Object.keys(this).length; i++) {
+        let [key, value] = Object.entries(this)[i]
+        value.isFound = False;
+    }
+    return result;
+}
+
+export { classroom_data, searchClassroomsIndex, searchNodeIndex, node_data , pathFinder}
