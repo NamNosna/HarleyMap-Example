@@ -102,18 +102,17 @@ const node_data = {
             "lat": 43.11970278298468,
             "lng": -77.54897619163009
         },
-        "description": "gallery",
+        "names": ["gallery",],
         "imgURL": "LocationPictures\\HarleyPic_GalleryLeft.jpg",
         "adjacency": [
             'f2',
             'f5'
         ],
         "Floor":
-
             [
                 "1"
             ],
-
+        "isNode": true,
     },
     'f2': {
         "coord":
@@ -121,7 +120,7 @@ const node_data = {
             "lat": 43.1200601241642,
             "lng": -77.549123166763
         },
-        "description": "library corner",
+        "names": ["library corner",],
         "imgURL": "LocationPictures\\Library_Corner.jpg",
         "adjacency": [
             'f1',
@@ -131,7 +130,7 @@ const node_data = {
             [
                 "1"
             ],
-
+        "isNode": true,
     },
     'f3': {
         "coord":
@@ -139,7 +138,7 @@ const node_data = {
             "lat": 43.12024755679706,
             "lng": -77.54947111696794
         },
-        "description": "Beckerman",
+        "names": ["Beckerman"],
         "imgURL": "LocationPictures\\Beckerman.jpg",
         "adjacency": [
             "f4"
@@ -148,14 +147,14 @@ const node_data = {
             [
                 "1"
             ],
-
+        "isNode": true,
     },
     'f4': {
         "coord": {
             "lat": 43.12007778048073,
             "lng": -77.54946512133455
         },
-        "description": "English-Math-Beckerman intersection",
+        "names": ["English-Math-Beckerman intersection"],
         "imgURL": "LocationPictures\\English_Math_Beckerman_intersection.jpg",
         "adjacency": [
             "f3", "f2"
@@ -163,14 +162,14 @@ const node_data = {
         "Floor": [
             "1"
         ],
-
+        "isNode": true,
     },
     'f5': {
         "coord": {
             "lat": 43.119363417375354,
             "lng": -77.54887511750276
         },
-        "description": "Art Room",
+        "names": ["Art Room"],
         "imgURL": "LocationPictures\\Art_Room.jpg",
         "adjacency": [
             'f1'
@@ -178,14 +177,14 @@ const node_data = {
         "Floor": [
             "1"
         ],
-
+        "isNode": true,
     },
     'f6': {
         "coord": {
             "lat": 0,
             "lng": 0
         },
-        "description": "",
+        "names": [],
         "imgURL": "",
         "adjacency": [
 
@@ -193,22 +192,92 @@ const node_data = {
         "Floor": [
             "1"
         ],
+        "isNode": true,
+    },
+    'f7': {
+        "coord":
+        {
+            "lat": 43.11957086352588,
+            "lng": -77.54956983554084
+        },
+        "names":
+            [
+                "Dining Hall"
+            ],
+        "imgURL": "",
+        "adjacency": [
 
-    }
+        ],
+        "Floor": [
+            "1"
+        ],
+        "isNode": true,
+    },
+    'r1': {
+        "coord":
+        {
+            "lat": 43.119835475136036,
+            "lng": -77.5492903761625
+        },
+        "names":
+            [
+                "Court Yard",
+            ],
+        "imgURL": "",
+        "adjacency": [
 
-}
+        ],
+        "Floor": [
+            "1"
+        ],
+        "isNode": false,
+        "classroomInfo": {
+            "Teachers":
+                [
 
-function searchClassroomsIndex(inputValue) {
-    const searchkey = new RegExp(`\\b${inputValue}+\\b`, 'gi');
-    let result = [];
-    for (let i = 0; i < classroom_data.length; i++) {
-        if (JSON.stringify(classroom_data[i]).search(searchkey) !== -1) {
-            result.push(i);
+                ],
+            "Courses":
+                [
+
+                ]
+
         }
-    }
-    return result;
-}
+    },
 
+    'r3': {
+        "coord":
+        {
+            "lat": 43.11969642252823,
+            "lng": -77.549519840765
+        },
+        "names":
+            [
+                "Biology Room"
+            ],
+        "imgURL": "",
+        "adjacency": [
+
+        ],
+        "Floor": [
+            "1"
+        ],
+        "isNode": false,
+        "classroomInfo": {
+            "Teachers":
+                [
+                    "Mr. Henschke",
+                    "Dr. Vinton"
+                ],
+            "Courses":
+                [
+                    "AP Biology",
+                    "Biology",
+                    "Honors Biology",
+                    "Environmental Science"
+                ]
+        }
+    },
+}
 
 //search Node Index:
 //If input an array, it searches the keys of the nodes
@@ -225,7 +294,7 @@ function searchNodeIndex(inputValue) {
     } else {
         for (let i = 0; i < Object.keys(node_data).length; i++) {
             let [key, value] = Object.entries(node_data)[i];
-            if (value.description.search(searchkey) !== -1) {
+            if (JSON.stringify(value.names).search(searchkey) !== -1) {
                 result.push(i);
             }
         }
@@ -298,4 +367,4 @@ function pathFinder(nodeData, startText, endText) {
 
 
 
-export { classroom_data, searchClassroomsIndex, searchNodeIndex, node_data, pathFinder }
+export { searchNodeIndex, node_data, pathFinder }
