@@ -25,14 +25,36 @@
       width: 200px;
       height: 150px;
     }
+
+    .pathSearchDivisionDisplay {
+      
+      background-color: white;
+      white-space: pre-line;
+      width: 100px;
+    }
+
+    .btnUp{
+      background-color: whitesmoke
+    }
+    .btnDown{
+      background-color: gray
+    }
   </style>
 
 </head>
 
 <body>
-  <input id="input_search1" type="text" class="searchBox" placeholder="Search / Initial Point" />
-  <input id="input_search2" type="text" class="searchBox" placeholder="end point" />
-  <p id="debugText">PLACEHOLDER FOR DEBUGGING</p>
+  <input id="input_search1" type="text" class="searchBox" placeholder="Search">
+  <div class="pathSearchDivisionDisplay" id="pathEndsDisplay" data-startPos="" data-endPos="">
+    <p>Start:</p>
+    <button id = "setStartButton">Set Start</button>
+    <div class="imgFrame"> <img id = "startImgDisplay" class = "img"> </div>
+    <p>End:</p>
+    <button id = "setEndButton">Set End</button>
+    <div class="imgFrame"><img id = "endImgDisplay" class = "img"></div>
+    <button>Search</button>
+  </div>
+  <p id="debugText" style="background-color: aliceblue;">PLACEHOLDER FOR DEBUGGING</p>
 
   <div id="map"></div>
 

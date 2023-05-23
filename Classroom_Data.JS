@@ -209,6 +209,11 @@ function searchClassroomsIndex(inputValue) {
     return result;
 }
 
+
+//search Node Index:
+//If input an array, it searches the keys of the nodes
+//If input an string, it searches the descriptions(names) of the node 
+//output an array of indexs to represent each node in order
 function searchNodeIndex(inputValue) {
     const searchkey = new RegExp(`\\b${inputValue}+\\b`, 'gi');
     let result = [];
@@ -227,11 +232,18 @@ function searchNodeIndex(inputValue) {
     }
     return result;
 }
+
 //a path finder that returns an array of location labels
 //nodeData must be an object in this case node_data
 //start and end refers to the property key string in nodeData. e.g. f2, f5
 //returns an array of property key string
-function pathFinder(nodeData, start, end) {
+function pathFinder(nodeData, startText, endText) {
+
+    //change: allow startText input description and 
+
+    let start = startText
+    let end = endText
+
     //document.getElementById("debugText").innerHTML += "<br> search triggered"
     //refresher and tester
     let validStart = false;
@@ -249,16 +261,12 @@ function pathFinder(nodeData, start, end) {
     }
     function innerPathFinder(nodeData, start, end, currentResult) {
         let tempResult = [].concat(currentResult)
-        //document.getElementById("debugText.innerHTML") += "<br> inner search triggered" + start + end + " overall : " + currentResult
-
-
         if (tempResult.indexOf(start.valueOf()) !== -1) {
             return []
         }
         tempResult.push(start)
         if (start.valueOf() === end.valueOf()) {
             return tempResult
-
         }
         else {
             let possibilities = []

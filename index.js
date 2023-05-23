@@ -14,8 +14,9 @@ function initMap() {
   });
 
   const input1 = document.getElementById("input_search1")
-  const input2 = document.getElementById("input_search2")
   const debugText = document.getElementById("debugText")
+  const pathEndsDisplay = document.getElementById("pathEndsDisplay")
+
 
   // Click to register the location (Debug Feature)
   let infoWindowCoords = new google.maps.InfoWindow({
@@ -60,6 +61,37 @@ function initMap() {
   const nodeInfos = []
   const opened = []
   const nodeOpened = []
+
+  let selectingStart = false;
+  let selectingEnd = false;
+  
+  //set Start and end of path Finders
+  const setStartButton = document.getElementById("setStartButton");
+  const setEndButton = document.getElementById("setEndButton");
+
+  setStartButton.addEventListener("click", () => {
+    selectingEnd = false;
+    selectingStart = !selectingStart;
+    if(selectingStart){
+      setStartButton.setAttribute("class", "btnDown")
+    }else{
+      setStartButton.setAttribute("class", "btnUp")
+    }
+    setEndButton.setAttribute("class", "btnUp")
+    debugText.innerText += selectingStart;
+  })
+
+  setEndButton.addEventListener("click", () => {
+    selectingStart = false;
+    selectingEnd = !selectingEnd;
+    if(selectingEnd){
+      setEndButton.setAttribute("class", "btnDown")
+    }else{
+      setEndButton.setAttribute("class", "btnUp")
+    }
+    setStartButton.setAttribute("class", "btnUp")
+    debugText.innerText += selectingEnd;
+  })
 
   //set up bubbles for each of the rooms
   for (let i = 0; i < classroom_data.length; i++) {
@@ -108,6 +140,8 @@ function initMap() {
     })
   }
 
+
+
   //set up bubbles for each of the nodes
   for (let i = 0; i < Object.keys(node_data).length; i++) {
     let [name, node] = Object.entries(node_data)[i];
@@ -124,9 +158,9 @@ function initMap() {
     let infoContent = ""
 
     if (node.imgURL.length !== 0) {
-      infoContent = `<div class = imgFrame><img src='${node.imgURL}' class = img></div>`
+      infoContent = `<div class = imgFrame><img src="${node.imgURL}" class = img></div>`
     }
-
+    
     nodeOpened[i] = false
     //initialize the infoWindow
     nodeInfos[i] = new google.maps.InfoWindow({
@@ -135,6 +169,19 @@ function initMap() {
 
     //call the infowindow when marker is clicked
     nodeMarkers[i].addListener("click", () => {
+
+      if(selectingStart){
+        document.getElementById("startImgDisplay").setAttribute("src", node.imgURL)
+        selectingStart = false;
+        setStartButton.setAttribute("class", "btnUp")
+        nodeOpened[i] = false;
+      }else if(selectingEnd){
+        document.getElementById("endImgDisplay").setAttribute("src", node.imgURL)
+        selectingEnd = false;
+        setEndButton.setAttribute("class", "btnUp")
+        nodeOpened[i] = false;
+      }
+
       if (nodeOpened[i]) {
         nodeOpened[i] = false;
         nodeInfos[i].close()
@@ -146,67 +193,42 @@ function initMap() {
           shouldFocus: false,
         })
       }
+      
     })
+
+
   }
+
 
   input1.addEventListener("keyup", (event) => {
     if (event.key === "Enter") {
       inputProcess()
     }
   })
-  input2.addEventListener("keyup", (event) => {
-    if (event.key === "Enter") {
-      inputProcess()
-    }
-  })
+
 
   function inputProcess() {
     input1.blur()
-    input2.blur()
-    //if there are things on input 2, which enables pathfinder
-    if (input2.value !== "") {
-      if (input1.value === "") {
-        alert("must enter a starting point")
-      } else {
 
-        let result = pathFinder(node_data, input1.value, input2.value)
-        /* Uncomment to test Result
-        document.getElementById("debugText").innerHTML += "result returned" + result */
-        if (result.length === 0) {
-          alert("no available path found")
-        }
-        let nodeIndex = searchNodeIndex(result)
-        for (let i = 0; i < nodeMarkers.length; i++) {
-          if (nodeIndex.indexOf(i) !== -1) {
-            nodeMarkers[i].setVisible(true)
-          } else {
-            nodeMarkers[i].setVisible(false)
-          }
-        }
+    let hlIndex = searchClassroomsIndex(input1.value)
+    let nodeIndex = searchNodeIndex(input1.value)
+
+    document.getElementById("debugText").innerHTML += nodeIndex
+    if (hlIndex.length === 0 && nodeIndex.length === 0) {
+      alert("result not found")
+    }
+    for (let i = 0; i < classroomMarkers.length; i++) {
+      if (hlIndex.indexOf(i) !== -1) {
+        classroomMarkers[i].setVisible(true)
+      } else {
+        classroomMarkers[i].setVisible(false)
       }
     }
-    //if only input 1 is filled, perform a search
-    else {
-      let hlIndex = searchClassroomsIndex(input1.value)
-      let nodeIndex = searchNodeIndex(input1.value)
-
-      document.getElementById("debugText").innerHTML += nodeIndex
-      if (hlIndex.length === 0 && nodeIndex.length === 0) {
-        alert("result not found")
-      }
-      for (let i = 0; i < classroomMarkers.length; i++) {
-        if (hlIndex.indexOf(i) !== -1) {
-          classroomMarkers[i].setVisible(true)
-        } else {
-          classroomMarkers[i].setVisible(false)
-        }
-      }
-      for (let i = 0; i < nodeMarkers.length; i++) {
-        if (nodeIndex.indexOf(i) !== -1) {
-          nodeMarkers[i].setVisible(true)
-        } else {
-          nodeMarkers[i].setVisible(false)
-        }
+    for (let i = 0; i < nodeMarkers.length; i++) {
+      if (nodeIndex.indexOf(i) !== -1) {
+        nodeMarkers[i].setVisible(true)
+      } else {
+        nodeMarkers[i].setVisible(false)
       }
     }
   }
@@ -358,8 +380,8 @@ function initMap() {
   map.controls[google.maps.ControlPosition.TOP_RIGHT].push(switchFloorsButton);
   map.controls[google.maps.ControlPosition.TOP_RIGHT].push(toggleButton);
   map.controls[google.maps.ControlPosition.TOP].push(input1);
-  map.controls[google.maps.ControlPosition.TOP].push(input2);
-  map.controls[google.maps.ControlPosition.LEFT].push(debugText);
+  map.controls[google.maps.ControlPosition.BOTTOM_LEFT].push(debugText);
+  map.controls[google.maps.ControlPosition.LEFT].push(pathEndsDisplay);
 
 }
 
