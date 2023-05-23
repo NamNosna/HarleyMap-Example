@@ -93,54 +93,8 @@ function initMap() {
     debugText.innerText += selectingEnd;
   })
 
-  // //set up bubbles for each of the rooms
-  // for (let i = 0; i < classroom_data.length; i++) {
-  //   let classroom = classroom_data[i]
-
-  //   //initialize all markers
-  //   classroomMarkers[i] = new google.maps.Marker({
-  //     position: new google.maps.LatLng(classroom.coord.lat,
-  //       classroom.coord.lng),
-  //     map: map,
-  //     label: classroom.Names[0]
-  //   })
-  //   classroomMarkers[i].setVisible(false)
-
-  //   //setting the infoWindow content
-  //   let infoContent = ""
-  //   for (const [key, value] of Object.entries(classroom_data[i])) {
-  //     if (value.length > 0) {
-  //       infoContent += key + ": "
-  //       for (const valueterm of value) {
-  //         infoContent += valueterm + ", "
-  //       }
-  //       infoContent = infoContent.substring(0, infoContent.length - 2) + "\n"
-  //     }
-  //   }
-
-  //   opened[i] = false
-  //   //initialize the infoWindow
-  //   classroomInfos[i] = new google.maps.InfoWindow({
-  //     content: infoContent
-  //   })
-
-  //   //call the infowindow when marker is clicked
-  //   classroomMarkers[i].addListener("click", () => {
-  //     if (opened[i]) {
-  //       opened[i] = false;
-  //       classroomInfos[i].close()
-  //     } else {
-  //       opened[i] = true;
-  //       classroomInfos[i].open({
-  //         anchor: classroomMarkers[i],
-  //         map,
-  //         shouldFocus: false,
-  //       })
-  //     }
-  //   })
-  // }
-
-
+  let startKey = ""
+  let endKey = ""
 
   //set up bubbles for each of the nodes
   for (let i = 0; i < Object.keys(node_data).length; i++) {
@@ -173,11 +127,13 @@ function initMap() {
       //UPDATE : Storing information for path Search
       if(selectingStart){
         document.getElementById("startImgDisplay").setAttribute("src", node.imgURL)
+        startKey = name;
         selectingStart = false;
         setStartButton.setAttribute("class", "btnUp")
         nodeOpened[i] = false;
       }else if(selectingEnd){
         document.getElementById("endImgDisplay").setAttribute("src", node.imgURL)
+        endKey = name;
         selectingEnd = false;
         setEndButton.setAttribute("class", "btnUp")
         nodeOpened[i] = false;
@@ -194,12 +150,30 @@ function initMap() {
           shouldFocus: false,
         })
       }
-      
     })
-
-
   }
 
+  //path search
+  const searchButton = document.getElementById("searchButton")
+  searchButton.addEventListener("click", () => {
+
+    if(startKey === "" || endKey === ""){
+      debugText.innerText = "void keys"
+      return
+    }
+
+    let route = searchNodeIndex(pathFinder(startKey, endKey))
+    debugText.innerText = JSON.stringify(route)
+    startKey = ""
+    endKey = ""
+    for (let i = 0; i < route.length; i++) {
+      if (route.indexOf(i) !== -1) {
+        nodeMarkers[i].setVisible(true)
+      } else {
+        nodeMarkers[i].setVisible(false)
+      }
+    }
+  })
 
   input1.addEventListener("keyup", (event) => {
     if (event.key === "Enter") {
@@ -207,13 +181,12 @@ function initMap() {
     }
   })
 
-
   function inputProcess() {
     input1.blur()
 
     let nodeIndex = searchNodeIndex(input1.value)
 
-    document.getElementById("debugText").innerHTML += nodeIndex
+    document.getElementById("debugText").innerHTML = nodeIndex
     if (nodeIndex.length === 0) {
       alert("result not found")
     }

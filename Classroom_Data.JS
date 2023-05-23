@@ -1,100 +1,3 @@
-const classroom_data = [
-    {
-        "coord":
-        {
-            "lat": 43.119835475136036,
-            "lng": -77.5492903761625
-        },
-        "Names":
-            [
-                "Court Yard"
-            ],
-        "Teachers":
-            [
-
-            ],
-        "Floor":
-            [
-                "1"
-            ],
-        "Courses":
-            [
-
-            ]
-    },
-    {
-        "coord":
-        {
-            "lat": 43.11957086352588,
-            "lng": -77.54956983554084
-        },
-        "Names":
-            [
-                "Dining Hall"
-            ],
-        "Teachers":
-            [
-
-            ],
-        "Floor":
-            [
-            ],
-        "Courses":
-            [
-
-            ]
-    },
-    {
-        "coord":
-        {
-            "lat": 43.11969642252823,
-            "lng": -77.549519840765
-        },
-        "Names":
-            [
-                "Biology Room"
-            ],
-        "Teachers":
-            [
-                "Mr. Henschke",
-                "Dr. Vinton"
-            ],
-        "Floor":
-            [
-                "1"
-            ],
-        "Courses":
-            [
-                "AP Biology",
-                "Biology",
-                "Honors Biology",
-                "Environmental Science"
-            ]
-    },
-    {
-        "coord":
-        {
-
-        },
-        "Names":
-            [
-
-            ],
-        "Teachers":
-            [
-
-            ],
-        "Floor":
-            [
-
-            ],
-        "Courses":
-            [
-
-            ]
-    }
-]
-
 const node_data = {
     "f1": {
         "coord":
@@ -141,7 +44,7 @@ const node_data = {
         "names": ["Beckerman"],
         "imgURL": "LocationPictures\\Beckerman.jpg",
         "adjacency": [
-            "f4"
+            "f4", 'f8'
         ],
         "Floor":
             [
@@ -202,11 +105,30 @@ const node_data = {
         },
         "names":
             [
-                "Dining Hall"
+                "Dining Hall", "Cafeteria"
             ],
-        "imgURL": "",
+        "imgURL": "LocationPictures\\cafeteria.jpg",
         "adjacency": [
 
+        ],
+        "Floor": [
+            "1"
+        ],
+        "isNode": true,
+    },
+    'f8': {
+        "coord":
+        {
+            "lat": 43.120226123323384, 
+            "lng": -77.54973271139298
+        },
+        "names":
+            [
+                "Flag Hall",
+            ],
+        "imgURL": "LocationPictures\\Flaghall.jpg",
+        "adjacency": [
+            'f3',
         ],
         "Floor": [
             "1"
@@ -221,9 +143,9 @@ const node_data = {
         },
         "names":
             [
-                "Court Yard",
+                "Courtyard",
             ],
-        "imgURL": "",
+        "imgURL": "LocationPictures\\Courtyard.jpg",
         "adjacency": [
 
         ],
@@ -303,22 +225,17 @@ function searchNodeIndex(inputValue) {
 }
 
 //a path finder that returns an array of location labels
-//nodeData must be an object in this case node_data
-//start and end refers to the property key string in nodeData. e.g. f2, f5
+//start and end refers to the property key string in node_data. e.g. f2, f5
 //returns an array of property key string
-function pathFinder(nodeData, startText, endText) {
+function pathFinder(start, end) {
 
-    //change: allow startText input description and 
-
-    let start = startText
-    let end = endText
 
     //document.getElementById("debugText").innerHTML += "<br> search triggered"
     //refresher and tester
     let validStart = false;
     let validEnd = false;
-    for (let i = 0; i < Object.keys(nodeData).length; i++) {
-        let key = Object.keys(nodeData)[i]
+    for (let i = 0; i < Object.keys(node_data).length; i++) {
+        let key = Object.keys(node_data)[i]
         if (key.valueOf() === start.valueOf()) { validStart = true }
         if (key.valueOf() === end.valueOf()) { validEnd = true }
     }
@@ -328,7 +245,7 @@ function pathFinder(nodeData, startText, endText) {
         alert("input key Error")
         return result
     }
-    function innerPathFinder(nodeData, start, end, currentResult) {
+    function innerPathFinder(start, end, currentResult) {
         let tempResult = [].concat(currentResult)
         if (tempResult.indexOf(start.valueOf()) !== -1) {
             return []
@@ -341,9 +258,9 @@ function pathFinder(nodeData, startText, endText) {
             let possibilities = []
             let returnValue = []
             //recursion to get all possible results
-            for (let i = 0; i < nodeData[start].adjacency.length; i++) {
-                let newStart = nodeData[start].adjacency[i]
-                possibilities.push(innerPathFinder(nodeData, newStart, end, tempResult))
+            for (let i = 0; i < node_data[start].adjacency.length; i++) {
+                let newStart = node_data[start].adjacency[i]
+                possibilities.push(innerPathFinder(newStart, end, tempResult))
             }
             //find and return the best result
             //document.getElementById("debugText.innerHTML") += "<br> probabilities returned" + JSON.stringify(possibilities)
@@ -358,7 +275,7 @@ function pathFinder(nodeData, startText, endText) {
     }
 
 
-    result = innerPathFinder(nodeData, start, end, result)
+    result = innerPathFinder(start, end, result)
     //document.getElementById("debugText.innerHTML") += "<br> result gotten: " + result
 
     //document.getElementById("debugText.innerHTML") += "<br> search returned"
