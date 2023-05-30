@@ -9,12 +9,10 @@ const node_data = {
         "imgURL": "LocationPictures\\HarleyPic_GalleryLeft.jpg",
         "adjacency": [
             'f2',
-            'f5'
+            'f5',
+            "f9"
         ],
-        "Floor":
-            [
-                "1"
-            ],
+        "Floor": 1,
         "isNode": true,
     },
     'f2': {
@@ -29,10 +27,7 @@ const node_data = {
             'f1',
             "f4"
         ],
-        "Floor":
-            [
-                "1"
-            ],
+        "Floor": 1,
         "isNode": true,
     },
     'f3': {
@@ -46,10 +41,7 @@ const node_data = {
         "adjacency": [
             "f4", 'f8'
         ],
-        "Floor":
-            [
-                "1"
-            ],
+        "Floor": 1,
         "isNode": true,
     },
     'f4': {
@@ -60,11 +52,9 @@ const node_data = {
         "names": ["English-Math-Beckerman intersection"],
         "imgURL": "LocationPictures\\English_Math_Beckerman_intersection.jpg",
         "adjacency": [
-            "f3", "f2"
+            "f3", "f2","f9"
         ],
-        "Floor": [
-            "1"
-        ],
+        "Floor": 1,
         "isNode": true,
     },
     'f5': {
@@ -77,9 +67,7 @@ const node_data = {
         "adjacency": [
             'f1'
         ],
-        "Floor": [
-            "1"
-        ],
+        "Floor": 1,
         "isNode": true,
     },
     'f6': {
@@ -92,9 +80,7 @@ const node_data = {
         "adjacency": [
 
         ],
-        "Floor": [
-            "1"
-        ],
+        "Floor": 1,
         "isNode": true,
     },
     'f7': {
@@ -111,9 +97,7 @@ const node_data = {
         "adjacency": [
 
         ],
-        "Floor": [
-            "1"
-        ],
+        "Floor": 1,
         "isNode": true,
     },
     'f8': {
@@ -130,12 +114,26 @@ const node_data = {
         "adjacency": [
             'f3',
         ],
-        "Floor": [
-            "1"
-        ],
+        "Floor": 1,
         "isNode": true,
     },
-    'r1': {
+    'f9': {
+        "coord":
+        {
+            "lat": 43.119563093414335, "lng": -77.5494757792181
+        },
+        "names":
+            [
+                "Math-Language Hallway intersection",
+            ],
+        "imgURL": "",
+        "adjacency": [
+            'f4',"f1"
+        ],
+        "Floor": 1,
+        "isNode": true,
+    },
+    'Courtyard': {
         "coord":
         {
             "lat": 43.119835475136036,
@@ -149,14 +147,12 @@ const node_data = {
         "adjacency": [
 
         ],
-        "Floor": [
-            "1"
-        ],
+        "Floor": 1,
         "isNode": false,
         "classroomInfo": {
             "Teachers":
                 [
-
+                    
                 ],
             "Courses":
                 [
@@ -166,7 +162,7 @@ const node_data = {
         }
     },
 
-    'r3': {
+    'BioRoom': {
         "coord":
         {
             "lat": 43.11969642252823,
@@ -180,9 +176,7 @@ const node_data = {
         "adjacency": [
 
         ],
-        "Floor": [
-            "1"
-        ],
+        "Floor": 1,
         "isNode": false,
         "classroomInfo": {
             "Teachers":
@@ -196,6 +190,383 @@ const node_data = {
                     "Biology",
                     "Honors Biology",
                     "Environmental Science"
+                ]
+        }
+    },    
+    'physics': {
+        "coord": {
+            "lat": 43.11976884647795, "lng": -77.5495737891719
+        },
+        "names": ["Physics Room"],
+        "imgURL": "",
+        "adjacency": [
+
+        ],
+        "Floor": [
+            "1"
+        ],
+        "isNode": false,
+        "classroomInfo": {
+            "Teachers":
+                [
+                ],
+            "Courses":
+                [
+                    "AP Physics 1","AP Physics 1","Honors Physics","Regular Physics"
+                ]
+        }
+    },
+    'US-7': {
+        "coord": {
+            "lat": 43.11969366643333, "lng": -77.54942296497704
+        },
+        "names": ["US-7"],
+        "imgURL": "",
+        "adjacency": [
+            "f9", "f4"
+        ],
+        "Floor": 1,
+        "isNode": false,
+        "classroomInfo": {
+            "Teachers":
+                [
+                    "Mr.Balaji"
+                ],
+            "Courses":
+                [
+                    "PreCalculus"
+                ]
+        }
+    },
+    'US-6': {
+        "coord": {
+            "lat": 43.1196929742402, "lng": -77.54954031162144
+        },
+        "names": ["US-6"],
+        "imgURL": "",
+        "adjacency": [
+            "f9", "f4"
+        ],
+        "Floor": 1,
+        "isNode": false,
+        "classroomInfo": {
+            "Teachers":
+                [
+                    "JAM"
+                ],
+            "Courses":
+                [
+                    "Calculus AB","Calculus BC","Geometry"
+                ]
+        }
+    },
+    'US-8': {
+        "coord": {
+            "lat": 43.11976219351384, "lng": -77.54954835824849
+        },
+        "names": ["US-8", "SSP Room"],
+        "imgURL": "",
+        "adjacency": [
+            "f9", "f4"
+        ],
+        "Floor": 1,
+        "isNode": false,
+        "classroomInfo": {
+            "Teachers":
+                [
+                    "Ms. Kantor"
+                ],
+            "Courses":
+                [
+                    
+                ]
+        }
+    },
+    'US-5': {
+        "coord": {
+            "lat": 43.11978900654555, "lng": -77.5494254559243
+        },
+        "names": ["US-5"],
+        "imgURL": "",
+        "adjacency": [
+            "f9", "f4"
+        ],
+        "Floor": 1,
+        "isNode": false,
+        "classroomInfo": {
+            "Teachers":
+                [
+                    "Mrs.Densmore"
+                ],
+            "Courses":
+                [
+                    "Latin"
+                ]
+        }
+    },
+    'MathOffice': {
+        "coord": {
+            "lat": 43.11974502599434, "lng": -77.54942438882647
+        },
+        "names": ["Math Office"],
+        "imgURL": "",
+        "adjacency": [
+            "f9", "f4"
+        ],
+        "Floor": 1,
+        "isNode": false,
+        "classroomInfo": {
+            "Teachers":
+                [
+                    "Dr. Vinton", "Dr. Dobson"
+                ],
+            "Courses":
+                [
+
+                ]
+        }
+    },
+    'FacultyRoom': {
+        "coord": {
+            "lat": 43.119814909807864, "lng": -77.549545778468
+        },
+        "names": ["Faculty Room"],
+        "imgURL": "",
+        "adjacency": [
+            "f9", "f4"
+        ],
+        "Floor": 1,
+        "isNode": false,
+        "classroomInfo": {
+            "Teachers":
+                [
+
+                ],
+            "Courses":
+                [
+
+                ]
+        }
+    },
+    'US-3': {
+        "coord": {
+            "lat": 43.11985298034218, "lng": -77.54943245513782
+        },
+        "names": ["US-3"],
+        "imgURL": "",
+        "adjacency": [
+            "f9", "f4"
+        ],
+        "Floor": 1,
+        "isNode": false,
+        "classroomInfo": {
+            "Teachers":
+                [
+                    "Mrs. Colosimo"
+                ],
+            "Courses":
+                [
+                    "French"
+                ]
+        }
+    },
+    'US-4': {
+        "coord": {
+            "lat": 43.119872361696, "lng": -77.54954980178222
+        },
+        "names": ["US-4"],
+        "imgURL": "",
+        "adjacency": [
+            "f9", "f4"
+        ],
+        "Floor": 1,
+        "isNode": false,
+        "classroomInfo": {
+            "Teachers":
+                [
+                    "Dr.Perkins"
+                ],
+            "Courses":
+                [
+                    "AP Statistics", "FST"
+                ]
+        }
+    },
+    'US-1': {
+        "coord": {
+            "lat": 43.11994144234133, "lng": -77.5494351373468
+        },
+        "names": ["US-1"],
+        "imgURL": "",
+        "adjacency": [
+            "f9", "f4"
+        ],
+        "Floor": 1,
+        "isNode": false,
+        "classroomInfo": {
+            "Teachers":
+                [
+                    "Dr. Morrison"
+                ],
+            "Courses":
+                [
+                    
+                ]
+        }
+    },
+    'US-2': {
+        "coord": {
+            "lat": 43.119937289199285, "lng": -77.54954242570743
+        },
+        "names": ["US-2"],
+        "imgURL": "",
+        "adjacency": [
+            "f9", "f4"
+        ],
+        "Floor": [
+            "1"
+        ],
+        "isNode": false,
+        "classroomInfo": {
+            "Teachers":
+                [
+                    "Profe. Gonzalez"
+                ],
+            "Courses":
+                [
+
+                ]
+        }
+    },
+    'E-1': {
+        "coord": {
+            "lat": 43.12009326084444, "lng": -77.54934798467887
+        },
+        "names": ["E-1"],
+        "imgURL": "",
+        "adjacency": [
+            "f4", "f2"
+        ],
+        "Floor": 1,
+        "isNode": false,
+        "classroomInfo": {
+            "Teachers":
+                [
+                    "Dr. Malone"
+                ],
+            "Courses":
+                [
+                    "English 11"
+                ]
+        }
+    },
+    'E-2': {
+        "coord": {
+            "lat": 43.12009049208999, "lng": -77.54927824724449
+        },
+        "names": ["E-2"],
+        "imgURL": "",
+        "adjacency": [
+            "f4", "f2"
+        ],
+        "Floor": 1,
+        "isNode": false,
+        "classroomInfo": {
+            "Teachers":
+                [
+                    "Mr. O'Brien"
+                ],
+            "Courses":
+                [
+                    "English 10"
+                ]
+        }
+    },
+    'E-3': {
+        "coord": {
+            "lat": 43.120091634167586, "lng": -77.54920597474555
+        },
+        "names": ["E-3"],
+        "imgURL": "",
+        "adjacency": [
+            "f4", "f2"
+        ],
+        "Floor": 1,
+        "isNode": false,
+        "classroomInfo": {
+            "Teachers":
+                [
+                    "Ms. Berg"
+                ],
+            "Courses":
+                [
+                    
+                ]
+        }
+    },
+    'US-Library': {
+        "coord": {
+            "lat": 43.12008516700678, "lng": -77.54904065350848
+        },
+        "names": ["US/MS Library"],
+        "imgURL": "",
+        "adjacency": [
+            "f2"
+        ],
+        "Floor": 1,
+        "isNode": false,
+        "classroomInfo": {
+            "Teachers":
+                [
+                    "Mrs. Mandola"
+                ],
+            "Courses":
+                [
+
+                ]
+        }
+    },
+    'ComputerLab': {
+        "coord": {
+            "lat": 43.119792541740914, "lng": -77.54906199483139
+        },
+        "names": ["Computer Lab"],
+        "imgURL": "",
+        "adjacency": [
+            "f2", "f1"
+        ],
+        "Floor": 1,
+        "isNode": false,
+        "classroomInfo": {
+            "Teachers":
+                [
+
+                ],
+            "Courses":
+                [
+
+                ]
+        }
+    },
+    'Example': {
+        "coord": {
+            "lat": 0, "lng": 0
+        },
+        "names": [],
+        "imgURL": "",
+        "adjacency": [
+
+        ],
+        "Floor": 1,
+        "isNode": false,
+        "classroomInfo": {
+            "Teachers":
+                [
+
+                ],
+            "Courses":
+                [
+
                 ]
         }
     },
@@ -246,14 +617,26 @@ function pathFinder(start, end) {
         return result
     }
     function innerPathFinder(start, end, currentResult) {
+        //Result, current result, temp result are all array of strings,
+        //each string is the key of the location,
+        //the array represent the path of locations that have been navigated already
+        //start is the first point of unknown path, end is the goal
         let tempResult = [].concat(currentResult)
+        
+        //if it has already been to start 
         if (tempResult.indexOf(start.valueOf()) !== -1) {
             return []
         }
         tempResult.push(start)
+        //if it finds the end
         if (start.valueOf() === end.valueOf()) {
             return tempResult
         }
+        //if it didn't find the end yet it is not a node
+        if (!node_data[start.valueOf()].isNode && currentResult.length !== 0){
+            return []
+        }
+
         else {
             let possibilities = []
             let returnValue = []

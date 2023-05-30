@@ -44,17 +44,6 @@ function initMap() {
   infowindow.addListener("closeclick", () => {
   })
 
-
-  const latSouth = 43.11901762438026
-  const latNorth = 43.12045260645478
-  const lngWest = -77.54985904953162
-  const lngEast = -77.5484469979196
-
-  const overlayCoordSW = new google.maps.LatLng(latSouth, lngWest)
-  const overlayCoordNE = new google.maps.LatLng(latNorth, lngEast)
-  const imgWidth = lngEast - lngWest;
-  const imgHeight = latNorth - latSouth;
-
   // const classroomMarkers = []
   const nodeMarkers = []
   // const classroomInfos = []
@@ -104,7 +93,7 @@ function initMap() {
       position: new google.maps.LatLng(node.coord.lat,
         node.coord.lng),
       map: map,
-      label: JSON.stringify(node.names)
+      label: node.names[0]
     })
     nodeMarkers[i].setVisible(false)
 
@@ -114,7 +103,14 @@ function initMap() {
     if (node.imgURL.length !== 0) {
       infoContent = `<div class = imgFrame><img src="${node.imgURL}" class = img></div>`
     }
-    
+    if (!node.isNode){
+      if(node.classroomInfo.Teachers.length !== 0){
+        infoContent += `<p>Teacher(s): ${JSON.stringify(node.classroomInfo.Teachers)}</p>`
+      }
+      if(node.classroomInfo.Courses.length !== 0){
+        infoContent += `<p>Courses(s): ${JSON.stringify(node.classroomInfo.Courses)}</p>`
+      }
+    }
     nodeOpened[i] = false
     //initialize the infoWindow
     nodeInfos[i] = new google.maps.InfoWindow({
@@ -138,7 +134,7 @@ function initMap() {
         setEndButton.setAttribute("class", "btnUp")
         nodeOpened[i] = false;
       }
-
+      rotateTo(node.Floor)
       if (nodeOpened[i]) {
         nodeOpened[i] = false;
         nodeInfos[i].close()
@@ -198,11 +194,6 @@ function initMap() {
       }
     }
   }
-
-  const bounds = new google.maps.LatLngBounds(
-    overlayCoordSW,// southwest
-    overlayCoordNE // northeast
-  );
 
   /**
    * The custom HarleyOverlay object contains the USGS image,
@@ -307,8 +298,23 @@ function initMap() {
     }
 
   }
+
+  const bounds = [];
+  bounds[0] = new google.maps.LatLngBounds(
+    new google.maps.LatLng(43.11901762438026, -77.54985904953162),// southwest
+    new google.maps.LatLng(43.12045260645478, -77.5484469979196) // northeast
+  );
+  bounds[1] = new google.maps.LatLngBounds(
+    new google.maps.LatLng(43.11907597448908, -77.55025507563087),// southwest
+    new google.maps.LatLng(43.12070696554435, -77.54857088522893) // northeast
+  );
+  bounds[2] = new google.maps.LatLngBounds(
+    new google.maps.LatLng( 43.11916215247135, -77.55021611743767),// southwest
+    new google.maps.LatLng(43.12066087790673,  -77.54857787829819) // northeast
+  )
+
   const images = ["Ground_Floor.jpg", "First_Floor.jpg", "Second_Floor.jpg"]
-  const overlays = [new HarleyOverlay(bounds, images[0]), new HarleyOverlay(bounds, images[1]), new HarleyOverlay(bounds, images[2])]
+  const overlays = [new HarleyOverlay(bounds[0], images[0]), new HarleyOverlay(bounds[1], images[1]), new HarleyOverlay(bounds[2], images[2])]
   let nCurrentImg = 0;
   function rotate() {
     for (let i = 0; i < overlays.length; i++) {
@@ -322,6 +328,17 @@ function initMap() {
     nCurrentImg = (nCurrentImg + 1) % overlays.length;
   }
   rotate()
+  function rotateTo(index){
+    for(let i = 0; i < overlays.length; i++){
+      if (i == index) {
+        overlays[i].setMap(map);
+      }
+      else {
+        overlays[i].setMap(null);
+      }
+    }
+  }
+
 
   const switchFloorsButton = document.createElement("button");
   switchFloorsButton.textContent = "Switch Floor"
