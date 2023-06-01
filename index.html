@@ -33,11 +33,9 @@
       width: 200px;
     }
 
-    .btnUp{
-      background-color: whitesmoke
-    }
+
     .btnDown{
-      background-color: gray
+      color: gray
     }
   </style>
 
@@ -46,10 +44,10 @@
 <body>
   <input id="input_search1" type="text" class="searchBox" placeholder="Search">
   <div class="pathSearchDivisionDisplay" id="pathEndsDisplay" data-startPos="" data-endPos="">
-    <p>Start:</p>
+    <p id = "startDescription">Start:</p>
     <button id = "setStartButton">Set Start</button>
     <div class="imgFrame"> <img id = "startImgDisplay" class = "img"> </div>
-    <p>End:</p>
+    <p id = "endDescription">End:</p>
     <button id = "setEndButton">Set End</button>
     <div class="imgFrame"><img id = "endImgDisplay" class = "img"></div>
     <button id = searchButton>Search</button>

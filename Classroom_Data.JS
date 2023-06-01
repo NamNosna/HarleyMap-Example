@@ -2,8 +2,7 @@ const node_data = {
     "f1": {
         "coord":
         {
-            "lat": 43.11970278298468,
-            "lng": -77.54897619163009
+            "lat": 43.11955933165715, "lng": -77.54916891084746
         },
         "names": ["gallery",],
         "imgURL": "LocationPictures\\HarleyPic_GalleryLeft.jpg",
@@ -18,10 +17,9 @@ const node_data = {
     'f2': {
         "coord":
         {
-            "lat": 43.1200601241642,
-            "lng": -77.549123166763
+            "lat": 43.11998918301855, "lng": -77.54914021849272
         },
-        "names": ["library corner",],
+        "names": ["library corner"],
         "imgURL": "LocationPictures\\Library_Corner.jpg",
         "adjacency": [
             'f1',
@@ -33,8 +31,7 @@ const node_data = {
     'f3': {
         "coord":
         {
-            "lat": 43.12024755679706,
-            "lng": -77.54947111696794
+            "lat": 43.120199871931625, "lng": -77.54947828974632
         },
         "names": ["Beckerman"],
         "imgURL": "LocationPictures\\Beckerman.jpg",
@@ -46,8 +43,7 @@ const node_data = {
     },
     'f4': {
         "coord": {
-            "lat": 43.12007778048073,
-            "lng": -77.54946512133455
+            "lat": 43.119986643308565, "lng": -77.54948705531223
         },
         "names": ["English-Math-Beckerman intersection"],
         "imgURL": "LocationPictures\\English_Math_Beckerman_intersection.jpg",
@@ -59,10 +55,9 @@ const node_data = {
     },
     'f5': {
         "coord": {
-            "lat": 43.119363417375354,
-            "lng": -77.54887511750276
+            "lat": 43.119306533764416, "lng": -77.54887863908304
         },
-        "names": ["Art Room"],
+        "names": ["Art Room intersection"],
         "imgURL": "LocationPictures\\Art_Room.jpg",
         "adjacency": [
             'f1'
@@ -120,7 +115,7 @@ const node_data = {
     'f9': {
         "coord":
         {
-            "lat": 43.119563093414335, "lng": -77.5494757792181
+            "lat": 43.119564466252314, "lng": -77.54947748576532
         },
         "names":
             [
@@ -587,7 +582,11 @@ function searchNodeIndex(inputValue) {
     } else {
         for (let i = 0; i < Object.keys(node_data).length; i++) {
             let [key, value] = Object.entries(node_data)[i];
-            if (JSON.stringify(value.names).search(searchkey) !== -1) {
+            let editedSearchString = JSON.stringify(value.names)
+            if(!value.isNode){
+                editedSearchString += " "+ JSON.stringify(value.classroomInfo.Teachers) + " " +JSON.stringify(value.classroomInfo.Courses)
+            }
+            if (editedSearchString.search(searchkey) !== -1) {
                 result.push(i);
             }
         }
@@ -633,7 +632,7 @@ function pathFinder(start, end) {
             return tempResult
         }
         //if it didn't find the end yet it is not a node
-        if (!node_data[start.valueOf()].isNode && currentResult.length !== 0){
+        if ((!node_data[start.valueOf()].isNode) && (currentResult.length > 1)){
             return []
         }
 
@@ -646,7 +645,7 @@ function pathFinder(start, end) {
                 possibilities.push(innerPathFinder(newStart, end, tempResult))
             }
             //find and return the best result
-            //document.getElementById("debugText.innerHTML") += "<br> probabilities returned" + JSON.stringify(possibilities)
+            document.getElementById("debugText").innerHTML += "<br> probabilities returned" + JSON.stringify(possibilities)
             for (let i = 0; i < possibilities.length; i++) {
                 if ((possibilities[i].length <= returnValue.length && possibilities[i].length !== 0) || returnValue.length === 0) {
                     returnValue = possibilities[i]

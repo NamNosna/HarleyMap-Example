@@ -34,6 +34,8 @@ function initMap() {
       JSON.stringify(mapMouseClick.latLng.toJSON(), null, 2)
     );
     infoWindowCoords.open(map);
+
+    reset()
   })
 
 
@@ -44,46 +46,45 @@ function initMap() {
   infowindow.addListener("closeclick", () => {
   })
 
-  // const classroomMarkers = []
+
   const nodeMarkers = []
-  // const classroomInfos = []
   const nodeInfos = []
-  // const opened = []
   const nodeOpened = []
 
-  let selectingStart = false;
-  let selectingEnd = false;
+
+  let selectedLocKey = "";
+  let startKey = ""
+  let endKey = ""
   
   //set Start and end of path Finders
   const setStartButton = document.getElementById("setStartButton");
   const setEndButton = document.getElementById("setEndButton");
+  const startDescription = document.getElementById("startDescription")
+  const endDescription = document.getElementById("endDescription")
 
   setStartButton.addEventListener("click", () => {
-    selectingEnd = false;
-    selectingStart = !selectingStart;
-    if(selectingStart){
-      setStartButton.setAttribute("class", "btnDown")
-    }else{
-      setStartButton.setAttribute("class", "btnUp")
+
+    if(selectedLocKey.length !=0){
+      startKey = selectedLocKey
+      const node = node_data[selectedLocKey]
+      startDescription.innerText = "start: " + node.names[0]
+      document.getElementById("startImgDisplay").setAttribute("src", node.imgURL)
     }
-    setEndButton.setAttribute("class", "btnUp")
-    debugText.innerText += selectingStart;
+    reset()
   })
 
   setEndButton.addEventListener("click", () => {
-    selectingStart = false;
-    selectingEnd = !selectingEnd;
-    if(selectingEnd){
-      setEndButton.setAttribute("class", "btnDown")
-    }else{
-      setEndButton.setAttribute("class", "btnUp")
+
+    if(selectedLocKey.length !=0){
+      endKey = selectedLocKey
+      const node = node_data[selectedLocKey]
+      endDescription.innerText = "end: " + node.names[0]
+      document.getElementById("endImgDisplay").setAttribute("src", node.imgURL)
     }
-    setStartButton.setAttribute("class", "btnUp")
-    debugText.innerText += selectingEnd;
+    reset()
   })
 
-  let startKey = ""
-  let endKey = ""
+
 
   //set up bubbles for each of the nodes
   for (let i = 0; i < Object.keys(node_data).length; i++) {
@@ -119,21 +120,9 @@ function initMap() {
 
     //call the infowindow when marker is clicked
     nodeMarkers[i].addListener("click", () => {
-
-      //UPDATE : Storing information for path Search
-      if(selectingStart){
-        document.getElementById("startImgDisplay").setAttribute("src", node.imgURL)
-        startKey = name;
-        selectingStart = false;
-        setStartButton.setAttribute("class", "btnUp")
-        nodeOpened[i] = false;
-      }else if(selectingEnd){
-        document.getElementById("endImgDisplay").setAttribute("src", node.imgURL)
-        endKey = name;
-        selectingEnd = false;
-        setEndButton.setAttribute("class", "btnUp")
-        nodeOpened[i] = false;
-      }
+      reset()
+      selectedLocKey = name;
+      nodeMarkers[i].setOpacity(0.5)
       rotateTo(node.Floor)
       if (nodeOpened[i]) {
         nodeOpened[i] = false;
@@ -149,6 +138,14 @@ function initMap() {
     })
   }
 
+  //reset
+  function reset() {
+    selectedLocKey = ""
+    for(let i =0; i < nodeMarkers.length; i ++){
+      nodeMarkers[i].setOpacity(1)
+    }
+  }
+
   //path search
   const searchButton = document.getElementById("searchButton")
   searchButton.addEventListener("click", () => {
@@ -159,22 +156,28 @@ function initMap() {
     }
 
     let route = searchNodeIndex(pathFinder(startKey, endKey))
-    debugText.innerText = JSON.stringify(route)
     startKey = ""
     endKey = ""
-    for (let i = 0; i < route.length; i++) {
+    debugText.innerText += route
+    for (let i = 0; i < nodeMarkers.length; i++) {
       if (route.indexOf(i) !== -1) {
         nodeMarkers[i].setVisible(true)
       } else {
         nodeMarkers[i].setVisible(false)
       }
     }
+    document.getElementById("startImgDisplay").removeAttribute("src")
+    document.getElementById("endImgDisplay").removeAttribute("src")
+    endDescription.innerText = "end: "
+    startDescription.innerText = "start: "
+    reset()
   })
 
   input1.addEventListener("keyup", (event) => {
     if (event.key === "Enter") {
       inputProcess()
     }
+    reset()
   })
 
   function inputProcess() {
@@ -352,6 +355,25 @@ function initMap() {
   toggleButton.textContent = "Toggle";
   toggleButton.classList.add("custom-map-control-button");
 
+  const clearButton = document.createElement("button");
+  clearButton.textContent = "Clear User Input"
+  clearButton.classList.add("custom-map-control-button");
+  clearButton.addEventListener("click", ()=>{
+    for(let i =0; i < nodeMarkers.length; i ++){
+      nodeMarkers[i].setOpacity(1)
+      nodeMarkers[i].setVisible(false)
+      nodeOpened[i] = false;
+      nodeInfos[i].close()
+    }
+    selectedLocKey = ""
+    startKey = ""
+    endKey = ""
+    document.getElementById("startImgDisplay").removeAttribute("src")
+    document.getElementById("endImgDisplay").removeAttribute("src")
+    endDescription.innerText = "end: "
+    startDescription.innerText = "start: "  
+  })
+  
 
   toggleButton.addEventListener("click", () => {
     overlays[0].toggle();
@@ -362,6 +384,7 @@ function initMap() {
 
   map.controls[google.maps.ControlPosition.TOP_RIGHT].push(switchFloorsButton);
   map.controls[google.maps.ControlPosition.TOP_RIGHT].push(toggleButton);
+  map.controls[google.maps.ControlPosition.TOP_RIGHT].push(clearButton);
   map.controls[google.maps.ControlPosition.TOP].push(input1);
   map.controls[google.maps.ControlPosition.BOTTOM_LEFT].push(debugText);
   map.controls[google.maps.ControlPosition.LEFT].push(pathEndsDisplay);
