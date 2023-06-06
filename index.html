@@ -33,9 +33,17 @@
       width: 200px;
     }
 
+    .hide{
+      display: none;
+    }
 
     .btnDown{
       color: gray
+    }
+    
+    .endPoints{
+      color: green;
+      font-size: medium;
     }
   </style>
 
@@ -44,12 +52,13 @@
 <body>
   <input id="input_search1" type="text" class="searchBox" placeholder="Search">
   <div class="pathSearchDivisionDisplay" id="pathEndsDisplay" data-startPos="" data-endPos="">
-    <p id = "startDescription">Start:</p>
+    <p id = "startDescription" class = "endPoints">Start:</p>
     <button id = "setStartButton">Set Start</button>
-    <div class="imgFrame"> <img id = "startImgDisplay" class = "img"> </div>
-    <p id = "endDescription">End:</p>
+    <div id= "startFrame" class="hide"> <img id = "startImgDisplay" class = "img"> </div>
+    <br>
+    <p id = "endDescription" class = "endPoints">End:</p>
     <button id = "setEndButton">Set End</button>
-    <div class="imgFrame"><img id = "endImgDisplay" class = "img"></div>
+    <div id= "endFrame" class="hide"><img id = "endImgDisplay" class = "img"></div>
     <button id = searchButton>Search</button>
   </div>
   <p id="debugText" style="background-color: aliceblue;">PLACEHOLDER FOR DEBUGGING</p>

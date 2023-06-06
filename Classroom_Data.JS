@@ -23,7 +23,8 @@ const node_data = {
         "imgURL": "LocationPictures\\Library_Corner.jpg",
         "adjacency": [
             'f1',
-            "f4"
+            "f4",
+            'US-Library'
         ],
         "Floor": 1,
         "isNode": true,
@@ -624,15 +625,18 @@ function pathFinder(start, end) {
         
         //if it has already been to start 
         if (tempResult.indexOf(start.valueOf()) !== -1) {
+            //document.getElementById("debugText").innerHTML += "passed: {" + start +"}";
             return []
         }
         tempResult.push(start)
         //if it finds the end
         if (start.valueOf() === end.valueOf()) {
+            //document.getElementById("debugText").innerHTML += "target reached"
             return tempResult
         }
         //if it didn't find the end yet it is not a node
         if ((!node_data[start.valueOf()].isNode) && (currentResult.length > 1)){
+            //document.getElementById("debugText").innerHTML += "not a node end"
             return []
         }
 
@@ -645,7 +649,7 @@ function pathFinder(start, end) {
                 possibilities.push(innerPathFinder(newStart, end, tempResult))
             }
             //find and return the best result
-            document.getElementById("debugText").innerHTML += "<br> probabilities returned" + JSON.stringify(possibilities)
+            //document.getElementById("debugText").innerHTML += "<br> probabilities returned" + JSON.stringify(possibilities)
             for (let i = 0; i < possibilities.length; i++) {
                 if ((possibilities[i].length <= returnValue.length && possibilities[i].length !== 0) || returnValue.length === 0) {
                     returnValue = possibilities[i]
@@ -658,7 +662,7 @@ function pathFinder(start, end) {
 
 
     result = innerPathFinder(start, end, result)
-    //document.getElementById("debugText.innerHTML") += "<br> result gotten: " + result
+    document.getElementById("debugText").innerText += "<br> result gotten: " + result
 
     //document.getElementById("debugText.innerHTML") += "<br> search returned"
     return result

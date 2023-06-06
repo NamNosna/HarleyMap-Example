@@ -68,6 +68,7 @@ function initMap() {
       startKey = selectedLocKey
       const node = node_data[selectedLocKey]
       startDescription.innerText = "start: " + node.names[0]
+      document.getElementById("startFrame").setAttribute("class", "imgFrame")
       document.getElementById("startImgDisplay").setAttribute("src", node.imgURL)
     }
     reset()
@@ -79,6 +80,7 @@ function initMap() {
       endKey = selectedLocKey
       const node = node_data[selectedLocKey]
       endDescription.innerText = "end: " + node.names[0]
+      document.getElementById("endFrame").setAttribute("class", "imgFrame")
       document.getElementById("endImgDisplay").setAttribute("src", node.imgURL)
     }
     reset()
@@ -116,6 +118,10 @@ function initMap() {
     //initialize the infoWindow
     nodeInfos[i] = new google.maps.InfoWindow({
       content: infoContent
+    })
+
+    google.maps.event.addListener(nodeInfos[i],"closeclick", () => {
+      nodeOpened[i] = false;
     })
 
     //call the infowindow when marker is clicked
@@ -168,8 +174,10 @@ function initMap() {
     }
     document.getElementById("startImgDisplay").removeAttribute("src")
     document.getElementById("endImgDisplay").removeAttribute("src")
-    endDescription.innerText = "end: "
-    startDescription.innerText = "start: "
+    document.getElementById("endFrame").setAttribute("class", "hide")
+    document.getElementById("startFrame").setAttribute("class", "hide")
+    endDescription.innerText = "End: "
+    startDescription.innerText = "Start: "
     reset()
   })
 
@@ -369,6 +377,8 @@ function initMap() {
     startKey = ""
     endKey = ""
     document.getElementById("startImgDisplay").removeAttribute("src")
+    document.getElementById("endFrame").setAttribute("class", "hide")
+    document.getElementById("startFrame").setAttribute("class", "hide")
     document.getElementById("endImgDisplay").removeAttribute("src")
     endDescription.innerText = "end: "
     startDescription.innerText = "start: "  
